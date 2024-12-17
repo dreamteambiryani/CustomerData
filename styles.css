@@ -49,7 +49,9 @@ label {
     max-width: 300px;
 }
 
-input[type="text"], input[type="number"], input[type="tel"] {
+input[type="text"],
+input[type="number"],
+input[type="tel"] {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -61,7 +63,8 @@ input[type="text"], input[type="number"], input[type="tel"] {
 }
 
 input[type="number"].quantity {
-    width: 60px; /* Adjust the size of the quantity text box */
+    width: 60px;
+    /* Adjust the size of the quantity text box */
 }
 
 /* Hide the arrows for number inputs in Webkit browsers (Chrome, Safari, etc.) */
@@ -76,11 +79,13 @@ input[type="number"] {
     -moz-appearance: textfield;
 }
 
-input[type="radio"], input[type="checkbox"] {
+input[type="radio"],
+input[type="checkbox"] {
     display: none;
 }
 
-input[type="radio"] + label, input[type="checkbox"] + label {
+input[type="radio"]+label,
+input[type="checkbox"]+label {
     position: relative;
     padding-left: 25px;
     cursor: pointer;
@@ -89,7 +94,8 @@ input[type="radio"] + label, input[type="checkbox"] + label {
     user-select: none;
 }
 
-input[type="radio"] + label::before, input[type="checkbox"] + label::before {
+input[type="radio"]+label::before,
+input[type="checkbox"]+label::before {
     content: '';
     position: absolute;
     left: 0;
@@ -101,8 +107,10 @@ input[type="radio"] + label::before, input[type="checkbox"] + label::before {
     background-color: #fff;
 }
 
-input[type="radio"]:checked + label::before, input[type="checkbox"]:checked + label::before {
-    content: '\2714'; /* Checkmark symbol */
+input[type="radio"]:checked+label::before,
+input[type="checkbox"]:checked+label::before {
+    content: '\2714';
+    /* Checkmark symbol */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -138,23 +146,30 @@ button:hover {
 }
 
 .qr-code {
-    width: 130px; /* Increase the size of the image */
-    margin: 10px auto; /* Center the image */
-    display: block; /* Ensure the image is block-level */
+    width: 130px;
+    /* Increase the size of the image */
+    margin: 10px auto;
+    /* Center the image */
+    display: block;
+    /* Ensure the image is block-level */
 }
 
-#vegMenu, #nonVegMenu {
+#vegMenu,
+#nonVegMenu {
     text-align: left;
 }
 
-#vegMenu label, #nonVegMenu label {
+#vegMenu label,
+#nonVegMenu label {
     display: block;
     margin-top: 10px;
 }
 
-#vegMenu input[type="checkbox"], #nonVegMenu input[type="checkbox"] {
+#vegMenu input[type="checkbox"],
+#nonVegMenu input[type="checkbox"] {
     margin-right: 10px;
-    display: inline-block; /* Ensure checkboxes are visible */
+    display: inline-block;
+    /* Ensure checkboxes are visible */
 }
 
 /* Responsive design */
@@ -184,7 +199,8 @@ button:hover {
     }
 
     .qr-code {
-        width: 100px; /* Adjust size for smaller screens */
+        width: 150px;
+        /* Adjust size for smaller screens */
     }
 
     input[type="text"],
@@ -229,3 +245,4 @@ button:hover {
         margin: 10px;
     }
 }
+
