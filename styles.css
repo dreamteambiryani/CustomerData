@@ -1,0 +1,189 @@
+/* styles.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f8f8;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.logo {
+    width: 100px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: #333;
+}
+
+h3 {
+    color: #777;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+label {
+    margin-bottom: 5px;
+    color: #555;
+    text-align: left;
+    width: 100%;
+    max-width: 300px;
+}
+
+input[type="text"], input[type="number"], input[type="tel"] {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+}
+
+input[type="number"].quantity {
+    width: 60px; /* Adjust the size of the quantity text box */
+}
+
+/* Hide the arrows for number inputs in Webkit browsers (Chrome, Safari, etc.) */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Hide the arrows for number inputs in Mozilla Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+input[type="radio"], input[type="checkbox"] {
+    display: none;
+}
+
+input[type="radio"] + label, input[type="checkbox"] + label {
+    position: relative;
+    padding-left: 25px;
+    cursor: pointer;
+    color: #555;
+    font-size: 16px;
+    user-select: none;
+}
+
+input[type="radio"] + label::before, input[type="checkbox"] + label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    background-color: #fff;
+}
+
+input[type="radio"]:checked + label::before, input[type="checkbox"]:checked + label::before {
+    content: '\2714'; /* Checkmark symbol */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    color: #28a745;
+    background-color: #fff;
+    border: 1px solid #28a745;
+}
+
+.radio-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.radio-group label {
+    margin-right: 20px;
+}
+
+button {
+    padding: 10px;
+    background-color: #28a745;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+.qr-code {
+    width: 130px; /* Increase the size of the image */
+    margin: 10px auto; /* Center the image */
+    display: block; /* Ensure the image is block-level */
+}
+
+#vegMenu, #nonVegMenu {
+    text-align: left;
+}
+
+#vegMenu label, #nonVegMenu label {
+    display: block;
+    margin-top: 10px;
+}
+
+#vegMenu input[type="checkbox"], #nonVegMenu input[type="checkbox"] {
+    margin-right: 10px;
+    display: inline-block; /* Ensure checkboxes are visible */
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    .container {
+        width: 100%;
+        margin: 10px;
+        padding: 15px;
+    }
+
+    .logo {
+        width: 80px;
+        margin-bottom: 15px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    h3 {
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+
+    button {
+        font-size: 14px;
+    }
+
+    .qr-code {
+        width: 100px; /* Adjust size for smaller screens */
+    }
+}
