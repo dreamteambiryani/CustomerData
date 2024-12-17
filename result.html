@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submission Status</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="css/result.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Submission Status</h2>
+        <p id="statusMessage"></p>
+        <button onclick="goBack()">Back to Home</button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const params = new URLSearchParams(window.location.search);
+            const status = params.get("status");
+            document.getElementById("statusMessage").textContent = status;
+        });
+
+        function goBack() {
+            window.location.href = "index.html"; // Adjust this if your form is on a different page
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dream Team Biryani House - Customer and Sales Data</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="css/styles.css">
+    <script>
+        function toggleMenu(menuType) {
+            var vegMenu = document.getElementById("vegMenu");
+            var nonVegMenu = document.getElementById("nonVegMenu");
+            if (menuType === "Veg") {
+                vegMenu.style.display = "block";
+                nonVegMenu.style.display = "none";
+            } else if (menuType === "NonVeg") {
+                vegMenu.style.display = "none";
+                nonVegMenu.style.display = "block";
+            }
+        }
+
+        function validatePhoneNumber(input) {
+            input.setCustomValidity(input.validity.patternMismatch ? "Please enter a valid 10-digit phone number." : "");
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var phoneNoField = document.getElementById("phoneNo");
+            phoneNoField.addEventListener("focus", function() {
+                if (this.value === "") {
+                    this.value = "91";
+                }
+                setTimeout(() => {
+                    this.setSelectionRange(2, 2); // Position cursor after "91"
+                }, 0);
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <img src="images/file.png" alt="Dream Team Biryani House Logo" class="logo">
+        <h2>Dream Team Biryani House</h2>
+        <h3>Customer and Sales Data</h3>
+        <form id="biryaniForm">
+            <label for="customerName">Customer Name</label>
+            <input type="text" id="customerName" name="customerName">
+
+            <label for="phoneNo">Phone No</label>
+            <input type="text" id="phoneNo" name="phoneNo" pattern="\d{12}" value="91" oninput="validatePhoneNumber(this)">
+
+            <label for="quantity">Quantity* (Select Veg or Non-Veg first)</label>
+            <div class="radio-group">
+                <input type="radio" id="veg" name="menuType" value="Veg" required onclick="toggleMenu('Veg')">
+                <label for="veg">Veg</label>
+            </div>
+            <div class="radio-group">
+                <input type="radio" id="nonVeg" name="menuType" value="NonVeg" required onclick="toggleMenu('NonVeg')">
+                <label for="nonVeg">Non-Veg</label>
+            </div>
+
+            <div id="vegMenu" style="display:none;">
+                <label for="vegFullPlate">Full Plate (120rs)</label>
+                <input type="checkbox" id="vegFullPlate" name="vegFullPlate" value="Full - 120rs">
+                <input type="number" min="0" id="vegFullPlateQty" name="vegFullPlateQty" class="quantity" placeholder="Qty">
+                <label for="vegHalfPlate">Half Plate (70rs)</label>
+                <input type="checkbox" id="vegHalfPlate" name="vegHalfPlate" value="Half - 70rs">
+                <input type="number" min="0" id="vegHalfPlateQty" name="vegHalfPlateQty" class="quantity" placeholder="Qty">
+                <label for="vegQuarterPlate">1/4 Plate (40rs)</label>
+                <input type="checkbox" id="vegQuarterPlate" name="vegQuarterPlate" value="Quarter - 40rs">
+                <input type="number" min="0" id="vegQuarterPlateQty" name="vegQuarterPlateQty" class="quantity" placeholder="Qty">
+            </div>
+
+            <div id="nonVegMenu" style="display:none;">
+                <label for="nonVegFullPlate">Full Plate (130rs)</label>
+                <input type="checkbox" id="nonVegFullPlate" name="nonVegFullPlate" value="Full - 130rs">
+                <input type="number" min="0" id="nonVegFullPlateQty" name="nonVegFullPlateQty" class="quantity" placeholder="Qty">
+                <label for="nonVegHalfPlate">Half Plate (80rs)</label>
+                <input type="checkbox" id="nonVegHalfPlate" name="nonVegHalfPlate" value="Half - 80rs">
+                <input type="number" min="0" id="nonVegHalfPlateQty" name="nonVegHalfPlateQty" class="quantity" placeholder="Qty">
+                <label for="nonVegQuarterPlate">1/4 Plate (45rs)</label>
+                <input type="checkbox" id="nonVegQuarterPlate" name="nonVegQuarterPlate" value="Quarter - 45rs">
+                <input type="number" min="0" id="nonVegQuarterPlateQty" name="nonVegQuarterPlateQty" class="quantity" placeholder="Qty">
+            </div>
+
+            <label for="paymentMode">Payment Mode*</label>
+            <div class="radio-group">
+                <input type="radio" id="online" name="paymentMode" value="Online" required>
+                <label for="online">Online</label>
+                <img src="images/payment.jpeg" alt="Payment QR Code" class="qr-code">
+            </div>
+            <div class="radio-group">
+                <input type="radio" id="cash" name="paymentMode" value="Cash" required>
+                <label for="cash">Cash</label>
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("biryaniForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var formData = new FormData(this);
+            fetch("https://script.google.com/macros/s/AKfycbzqcKa6Epws1Fvgxl-Xpa_02CuUv6UKMmto2KhmiJWHkNKE96uy8unpH4SD2F_CT43A/exec", {
+                method: "POST",
+                body: formData
+            }).then(response => response.text())
+              .then(responseText => {
+                  window.location.href = "result.html?status=" + encodeURIComponent(responseText);
+              })
+              .catch(error => {
+                  console.error("Error:", error);
+                  window.location.href = "result.html?status=" + encodeURIComponent("Failed to submit data.");
+              });
+        });
+    </script>
+</body>
+</html>
