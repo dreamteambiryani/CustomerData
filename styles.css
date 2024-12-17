@@ -186,4 +186,12 @@ button:hover {
     .qr-code {
         width: 100px; /* Adjust size for smaller screens */
     }
+
+    input[type="text"], input[type="number"], input[type="tel"] {
+        font-size: 14px; /* Adjust font size for smaller screens */
+    }
+
+    label {
+        font-size: 14px; /* Adjust label size for smaller screens */
+    }
 }
