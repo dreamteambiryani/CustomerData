@@ -187,13 +187,28 @@ button:hover {
         width: 100px; /* Adjust size for smaller screens */
     }
 
-    input[type="text"], input[type="number"], input[type="tel"] {
-        font-size: 14px; /* Adjust font size for smaller screens */ 
-        width: 100%; /* Ensure full width */ 
-        max-width: 100%; /* Ensure full width */
+    input[type="text"],
+    input[type="number"],
+    input[type="tel"] {
+        font-size: 14px;
+        /* Adjust font size for smaller screens */
+        width: 100%;
+        /* Ensure full width */
+        max-width: 100%;
+        /* Ensure full width */
+        padding: 12px;
+        /* Slightly increase padding for better touch experience */
+        margin-bottom: 12px;
+        /* Add some more spacing between elements */
     }
 
     label {
-        font-size: 14px; /* Adjust label size for smaller screens */
+        font-size: 14px;
+        /* Adjust label size for smaller screens */
+    }
+
+    .container {
+        padding: 15px;
+        margin: 10px;
     }
 }
