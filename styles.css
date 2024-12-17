@@ -188,14 +188,9 @@ button:hover {
     }
 
     input[type="text"], input[type="number"], input[type="tel"] {
-         padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        margin-bottom: 10px;
-        font-size: 16px;
-        width: 100%;
-        max-width: 300px;
-        box-sizing: border-box;
+        font-size: 14px; /* Adjust font size for smaller screens */ 
+        width: 100%; /* Ensure full width */ 
+        max-width: 100%; /* Ensure full width */
     }
 
     label {
