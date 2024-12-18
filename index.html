@@ -5,65 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dream Team Biryani House - Customer and Sales Data</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/styles.css">
-    <script>
-        function toggleMenu(menuType) {
-            var vegMenu = document.getElementById("vegMenu");
-            var nonVegMenu = document.getElementById("nonVegMenu");
-            if (menuType === "Veg") {
-                vegMenu.style.display = "block";
-                nonVegMenu.style.display = "none";
-            } else if (menuType === "NonVeg") {
-                vegMenu.style.display = "none";
-                nonVegMenu.style.display = "block";
-            }
-        }
-
-        function validatePhoneNumber(input) {
-            input.setCustomValidity(input.validity.patternMismatch ? "Please enter a valid 10-digit phone number." : "");
-        }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            var form = document.getElementById("biryaniForm");
-            form.addEventListener("submit", function(event) {
-                event.preventDefault(); // Prevent the default form submission
-
-                var phoneInput = document.getElementById("phoneNo");
-                var phoneNumber = phoneInput.value.trim();
-
-                // Add the country code if not present
-                if (!phoneNumber.startsWith("91")) {
-                    phoneNumber = "91" + phoneNumber;
-                }
-
-                // Update the phone input value
-                phoneInput.value = phoneNumber;
-
-                // Create a hidden input to hold the full phone number with the country code
-                var hiddenPhoneInput = document.createElement("input");
-                hiddenPhoneInput.type = "hidden";
-                hiddenPhoneInput.name = "fullPhoneNo";
-                hiddenPhoneInput.value = phoneNumber;
-
-                // Append the hidden input to the form
-                form.appendChild(hiddenPhoneInput);
-
-                // Continue with form submission
-                var formData = new FormData(form);
-                fetch("https://script.google.com/macros/s/AKfycbzqcKa6Epws1Fvgxl-Xpa_02CuUv6UKMmto2KhmiJWHkNKE96uy8unpH4SD2F_CT43A/exec", {
-                    method: "POST",
-                    body: formData
-                }).then(response => response.text())
-                  .then(responseText => {
-                      window.location.href = "result.html?status=" + encodeURIComponent(responseText);
-                  })
-                  .catch(error => {
-                      console.error("Error:", error);
-                      window.location.href = "result.html?status=" + encodeURIComponent("Failed to submit data.");
-                  });
-            });
-        });
-    </script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -103,9 +50,11 @@
                 <label for="nonVegFullPlate">Full Plate (130rs)</label>
                 <input type="checkbox" id="nonVegFullPlate" name="nonVegFullPlate" value="Full - 130rs">
                 <input type="number" min="0" id="nonVegFullPlateQty" name="nonVegFullPlateQty" class="quantity" placeholder="Qty">
+
                 <label for="nonVegHalfPlate">Half Plate (80rs)</label>
                 <input type="checkbox" id="nonVegHalfPlate" name="nonVegHalfPlate" value="Half - 80rs">
                 <input type="number" min="0" id="nonVegHalfPlateQty" name="nonVegHalfPlateQty" class="quantity" placeholder="Qty">
+
                 <label for="nonVegQuarterPlate">1/4 Plate (45rs)</label>
                 <input type="checkbox" id="nonVegQuarterPlate" name="nonVegQuarterPlate" value="Quarter - 45rs">
                 <input type="number" min="0" id="nonVegQuarterPlateQty" name="nonVegQuarterPlateQty" class="quantity" placeholder="Qty">
@@ -125,5 +74,63 @@
             <button type="submit">Submit</button>
         </form>
     </div>
+    <script>
+        function toggleMenu(menuType) {
+            var vegMenu = document.getElementById("vegMenu");
+            var nonVegMenu = document.getElementById("nonVegMenu");
+            if (menuType === "Veg") {
+                vegMenu.style.display = "block";
+                nonVegMenu.style.display = "none";
+            } else if (menuType === "NonVeg") {
+                vegMenu.style.display = "none";
+                nonVegMenu.style.display = "block";
+            }
+        }
+
+        function validatePhoneNumber(input) {
+            input.setCustomValidity(input.validity.patternMismatch ? "Please enter a valid 10-digit phone number." : "");
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var form = document.getElementById("biryaniForm");
+            form.addEventListener("submit", async function(event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                var phoneInput = document.getElementById("phoneNo");
+                var phoneNumber = phoneInput.value.trim();
+
+                // Add the country code if not present
+                if (!phoneNumber.startsWith("91")) {
+                    phoneNumber = "91" + phoneNumber;
+                }
+
+                // Update the phone input value
+                phoneInput.value = phoneNumber;
+
+                // Create a hidden input to hold the full phone number with the country code
+                var hiddenPhoneInput = document.createElement("input");
+                hiddenPhoneInput.type = "hidden";
+                hiddenPhoneInput.name = "fullPhoneNo";
+                hiddenPhoneInput.value = phoneNumber;
+
+                // Append the hidden input to the form
+                form.appendChild(hiddenPhoneInput);
+
+                // Continue with form submission
+                var formData = new FormData(form);
+                try {
+                    const response = await fetch("https://script.google.com/macros/s/AKfycbzqcKa6Epws1Fvgxl-Xpa_02CuUv6UKMmto2KhmiJWHkNKE96uy8unpH4SD2F_CT43A/exec", {
+                        method: "POST",
+                        body: formData
+                    });
+                    const responseText = await response.text();
+                    window.location.href = "result.html?status=" + encodeURIComponent(responseText);
+                } catch (error) {
+                    console.error("Error:", error);
+                    window.location.href = "result.html?status=" + encodeURIComponent("Failed to submit data.");
+                }
+            });
+        });
+    </script>
 </body>
 </html>
