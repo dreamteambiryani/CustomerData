@@ -23,39 +23,45 @@
             input.setCustomValidity(input.validity.patternMismatch ? "Please enter a valid 10-digit phone number." : "");
         }
 
-        document.getElementById("biryaniForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent default form submission
+        document.addEventListener("DOMContentLoaded", function() {
+            var form = document.getElementById("biryaniForm");
+            form.addEventListener("submit", function(event) {
+                event.preventDefault(); // Prevent the default form submission
 
-            var phoneInput = document.getElementById("phoneNo");
-            var phoneNumber = phoneInput.value;
+                var phoneInput = document.getElementById("phoneNo");
+                var phoneNumber = phoneInput.value.trim();
 
-            // Add the country code
-            if (!phoneNumber.startsWith("91")) {
-                phoneNumber = "91" + phoneNumber;
-            }
+                // Add the country code if not present
+                if (!phoneNumber.startsWith("91")) {
+                    phoneNumber = "91" + phoneNumber;
+                }
 
-            // Create a hidden input to hold the full phone number
-            var hiddenPhoneInput = document.createElement("input");
-            hiddenPhoneInput.type = "hidden";
-            hiddenPhoneInput.name = "fullPhoneNo";
-            hiddenPhoneInput.value = phoneNumber;
+                // Update the phone input value
+                phoneInput.value = phoneNumber;
 
-            // Append the hidden input to the form
-            this.appendChild(hiddenPhoneInput);
+                // Create a hidden input to hold the full phone number with the country code
+                var hiddenPhoneInput = document.createElement("input");
+                hiddenPhoneInput.type = "hidden";
+                hiddenPhoneInput.name = "fullPhoneNo";
+                hiddenPhoneInput.value = phoneNumber;
 
-            // Continue with form submission
-            var formData = new FormData(this);
-            fetch("https://script.google.com/macros/s/AKfycbzqcKa6Epws1Fvgxl-Xpa_02CuUv6UKMmto2KhmiJWHkNKE96uy8unpH4SD2F_CT43A/exec", {
-                method: "POST",
-                body: formData
-            }).then(response => response.text())
-              .then(responseText => {
-                  window.location.href = "result.html?status=" + encodeURIComponent(responseText);
-              })
-              .catch(error => {
-                  console.error("Error:", error);
-                  window.location.href = "result.html?status=" + encodeURIComponent("Failed to submit data.");
-              });
+                // Append the hidden input to the form
+                form.appendChild(hiddenPhoneInput);
+
+                // Continue with form submission
+                var formData = new FormData(form);
+                fetch("https://script.google.com/macros/s/AKfycbzqcKa6Epws1Fvgxl-Xpa_02CuUv6UKMmto2KhmiJWHkNKE96uy8unpH4SD2F_CT43A/exec", {
+                    method: "POST",
+                    body: formData
+                }).then(response => response.text())
+                  .then(responseText => {
+                      window.location.href = "result.html?status=" + encodeURIComponent(responseText);
+                  })
+                  .catch(error => {
+                      console.error("Error:", error);
+                      window.location.href = "result.html?status=" + encodeURIComponent("Failed to submit data.");
+                  });
+            });
         });
     </script>
 </head>
