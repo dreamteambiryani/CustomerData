@@ -23,16 +23,39 @@
             input.setCustomValidity(input.validity.patternMismatch ? "Please enter a valid 10-digit phone number." : "");
         }
 
-        document.addEventListener("DOMContentLoaded", function() {
-            var phoneNoField = document.getElementById("phoneNo");
-            phoneNoField.addEventListener("focus", function() {
-                if (this.value === "") {
-                    this.value = "91";
-                }
-                setTimeout(() => {
-                    this.setSelectionRange(2, 2); // Position cursor after "91"
-                }, 0);
-            });
+        document.getElementById("biryaniForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            var phoneInput = document.getElementById("phoneNo");
+            var phoneNumber = phoneInput.value;
+
+            // Add the country code
+            if (!phoneNumber.startsWith("91")) {
+                phoneNumber = "91" + phoneNumber;
+            }
+
+            // Create a hidden input to hold the full phone number
+            var hiddenPhoneInput = document.createElement("input");
+            hiddenPhoneInput.type = "hidden";
+            hiddenPhoneInput.name = "fullPhoneNo";
+            hiddenPhoneInput.value = phoneNumber;
+
+            // Append the hidden input to the form
+            this.appendChild(hiddenPhoneInput);
+
+            // Continue with form submission
+            var formData = new FormData(this);
+            fetch("https://script.google.com/macros/s/AKfycbzqcKa6Epws1Fvgxl-Xpa_02CuUv6UKMmto2KhmiJWHkNKE96uy8unpH4SD2F_CT43A/exec", {
+                method: "POST",
+                body: formData
+            }).then(response => response.text())
+              .then(responseText => {
+                  window.location.href = "result.html?status=" + encodeURIComponent(responseText);
+              })
+              .catch(error => {
+                  console.error("Error:", error);
+                  window.location.href = "result.html?status=" + encodeURIComponent("Failed to submit data.");
+              });
         });
     </script>
 </head>
@@ -46,8 +69,8 @@
             <input type="text" id="customerName" name="customerName">
 
             <label for="phoneNo">Phone No</label>
-            <input type="text" id="phoneNo" name="phoneNo" pattern="\d{12}" value="91" oninput="validatePhoneNumber(this)" inputmode="numeric">
-
+            <input type="text" id="phoneNo" name="phoneNo" pattern="\d{10}" oninput="validatePhoneNumber(this)" inputmode="numeric">
+            
             <label for="quantity">Quantity* (Select Veg or Non-Veg first)</label>
             <div class="radio-group">
                 <input type="radio" id="veg" name="menuType" value="Veg" required onclick="toggleMenu('Veg')">
@@ -96,23 +119,5 @@
             <button type="submit">Submit</button>
         </form>
     </div>
-
-    <script>
-        document.getElementById("biryaniForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            var formData = new FormData(this);
-            fetch("https://script.google.com/macros/s/AKfycbzqcKa6Epws1Fvgxl-Xpa_02CuUv6UKMmto2KhmiJWHkNKE96uy8unpH4SD2F_CT43A/exec", {
-                method: "POST",
-                body: formData
-            }).then(response => response.text())
-              .then(responseText => {
-                  window.location.href = "result.html?status=" + encodeURIComponent(responseText);
-              })
-              .catch(error => {
-                  console.error("Error:", error);
-                  window.location.href = "result.html?status=" + encodeURIComponent("Failed to submit data.");
-              });
-        });
-    </script>
 </body>
 </html>
