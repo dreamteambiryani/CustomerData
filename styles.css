@@ -1,5 +1,4 @@
-/* styles.css */
-
+/* General styles for larger screens */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f8f8f8;
@@ -28,11 +27,13 @@ body {
 
 h2 {
     color: #333;
+    font-size: 24px;
 }
 
 h3 {
     color: #777;
     margin-bottom: 20px;
+    font-size: 18px;
 }
 
 form {
@@ -166,10 +167,11 @@ button:hover {
 }
 
 #vegMenu input[type="checkbox"],
-#nonVegMenu input[type="checkbox"] {
+#nonVegMenu input[type="checkbox"],
+#nonVegMenu input[type="number"] {
     margin-right: 10px;
     display: inline-block;
-    /* Ensure checkboxes are visible */
+    /* Ensure checkboxes and numbers are visible */
 }
 
 /* Responsive design */
@@ -245,4 +247,3 @@ button:hover {
         margin: 10px;
     }
 }
-
