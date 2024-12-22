@@ -1,38 +1,33 @@
-/* styles.css */
-
+/* General styles for larger screens */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f5f5dc8f;
+    background-color: #f8f8f8;
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    padding-top: 60px; /* Ensures content doesn't hide behind the navbar */
 }
 
 .container {
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.611);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 90%;
     max-width: 400px;
     text-align: center;
-}
-
-.logo {
-    width: 100px;
-    margin-bottom: 20px;
+    margin-top: 20px; /* Adjusted margin to avoid overlap */
+    transition: all 0.3s ease-in-out; /* Add transition for smooth effect */
 }
 
 h2 {
     color: #333;
+    font-size: 24px;
 }
 
 h3 {
     color: #777;
     margin-bottom: 20px;
+    font-size: 18px;
 }
 
 form {
@@ -49,7 +44,9 @@ label {
     max-width: 300px;
 }
 
-input[type="text"], input[type="number"] {
+input[type="text"],
+input[type="number"],
+input[type="tel"] {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -61,7 +58,8 @@ input[type="text"], input[type="number"] {
 }
 
 input[type="number"].quantity {
-    width: 60px; /* Adjust the size of the quantity text box */
+    width: 60px;
+    /* Adjust the size of the quantity text box */
 }
 
 /* Hide the arrows for number inputs in Webkit browsers (Chrome, Safari, etc.) */
@@ -76,11 +74,13 @@ input[type="number"] {
     -moz-appearance: textfield;
 }
 
-input[type="radio"], input[type="checkbox"] {
+input[type="radio"],
+input[type="checkbox"] {
     display: none;
 }
 
-input[type="radio"] + label, input[type="checkbox"] + label {
+input[type="radio"]+label,
+input[type="checkbox"]+label {
     position: relative;
     padding-left: 25px;
     cursor: pointer;
@@ -89,7 +89,8 @@ input[type="radio"] + label, input[type="checkbox"] + label {
     user-select: none;
 }
 
-input[type="radio"] + label::before, input[type="checkbox"] + label::before {
+input[type="radio"]+label::before,
+input[type="checkbox"]+label::before {
     content: '';
     position: absolute;
     left: 0;
@@ -101,8 +102,10 @@ input[type="radio"] + label::before, input[type="checkbox"] + label::before {
     background-color: #fff;
 }
 
-input[type="radio"]:checked + label::before, input[type="checkbox"]:checked + label::before {
-    content: '\2714'; /* Checkmark symbol */
+input[type="radio"]:checked+label::before,
+input[type="checkbox"]:checked+label::before {
+    content: '\2714';
+    /* Checkmark symbol */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -138,52 +141,101 @@ button:hover {
 }
 
 .qr-code {
-    width: 130px; /* Increase the size of the image */
-    margin: 10px auto; /* Center the image */
-    display: block; /* Ensure the image is block-level */
+    width: 130px;
+    /* Increase the size of the image */
+    margin: 10px auto;
+    /* Center the image */
+    display: block;
+    /* Ensure the image is block-level */
 }
 
-#vegMenu, #nonVegMenu {
+#vegMenu,
+#nonVegMenu {
     text-align: left;
 }
 
-#vegMenu label, #nonVegMenu label {
+#vegMenu label,
+#nonVegMenu label {
     display: block;
     margin-top: 10px;
 }
 
-#vegMenu input[type="checkbox"], #nonVegMenu input[type="checkbox"] {
+#vegMenu input[type="checkbox"],
+#nonVegMenu input[type="checkbox"],
+#nonVegMenu input[type="number"] {
     margin-right: 10px;
-    display: inline-block; /* Ensure checkboxes are visible */
+    display: inline-block;
+    /* Ensure checkboxes and numbers are visible */
 }
 
-/* Responsive design */
-@media (max-width: 600px) {
-    .container {
-        width: 100%;
-        margin: 10px;
-        padding: 15px;
+/* Navigation Header styles */
+.navbar {
+    background-color: #343a40;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar-brand, .nav-link {
+    color: #ffffff !important;
+}
+
+.navbar-brand img {
+    margin-right: 10px;
+    width: 50px; /* Updated width */
+    height: 50px; /* Updated height */
+    border-radius: 50%;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%287%2C%2077%2C%2021%2C%201%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+.navbar-nav .nav-item .nav-link {
+    color: #ffffff;
+    margin-right: 1em;
+}
+
+.navbar-nav .nav-item .nav-link.active {
+    font-weight: bold;
+}
+
+/* Slide-down effect for small screens */
+@media (max-width: 576px) {
+    .show-form {
+        margin-top: 120px !important; /* Adjusted margin to show the form */
     }
 
-    .logo {
-        width: 80px;
-        margin-bottom: 15px;
+    .navbar-brand img {
+        width: 50px;
+        height: 50px;
     }
 
-    h2 {
-        font-size: 20px;
+    .btn {
+        font-size: 14px;
+        padding: 8px 16px;
     }
 
-    h3 {
-        font-size: 16px;
-        margin-bottom: 15px;
-    }
-
-    button {
+    .form-control {
+        padding: 8px;
         font-size: 14px;
     }
 
-    .qr-code {
-        width: 150px; /* Adjust size for smaller screens */
+    .container h2 {
+        font-size: 1.5rem;
+    }
+
+    .navbar-nav .nav-item .nav-link {
+        font-size: 17px;
+        margin-right: 0.5em;
+    }
+
+    .table-responsive {
+        font-size: 14px;
+    }
+
+    .table th, .table td {
+        padding: 8px;
     }
 }

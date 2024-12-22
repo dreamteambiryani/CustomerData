@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dream Team Biryani House - Customer and Sales Data</title>
+    <title>Dream Team | Customer and Sales Data</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -13,8 +13,27 @@
     <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <img src="images/file.png" alt="Dream Team Biryani House Logo" class="logo">
+    <!-- Navigation Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="#">
+            <img src="images/file.png" alt="Logo" class="d-inline-block align-top">
+        </a>
+        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="manage.html">Manage Data</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5 pt-5" id="formContainer">
         <h2>Dream Team Biryani House</h2>
         <h3>Customer and Sales Data</h3>
         <form id="biryaniForm">
@@ -74,6 +93,7 @@
             <button type="submit">Submit</button>
         </form>
     </div>
+
     <script>
         function toggleMenu(menuType) {
             var vegMenu = document.getElementById("vegMenu");
@@ -92,6 +112,13 @@
         }
 
         document.addEventListener("DOMContentLoaded", function() {
+            var formContainer = document.getElementById('formContainer');
+            var navbarToggler = document.querySelector('.navbar-toggler');
+
+            navbarToggler.addEventListener('click', function() {
+                formContainer.classList.toggle('show-form');
+            });
+
             var form = document.getElementById("biryaniForm");
             form.addEventListener("submit", async function(event) {
                 event.preventDefault(); // Prevent the default form submission
@@ -119,7 +146,7 @@
                 // Continue with form submission
                 var formData = new FormData(form);
                 try {
-                    const response = await fetch("https://script.google.com/macros/s/AKfycbzqcKa6Epws1Fvgxl-Xpa_02CuUv6UKMmto2KhmiJWHkNKE96uy8unpH4SD2F_CT43A/exec", {
+                    const response = await fetch("https://script.google.com/macros/s/AKfycbwqDg9kS03JL3GGyJwbHuonL43j3SC9rhj9ZFt6nNeoVZmbL1UjrKKdX_6wgn9rHjLLHg/exec", {
                         method: "POST",
                         body: formData
                     });

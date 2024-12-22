@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Data</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/manage.css">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="#">
+            <img src="images/file.png" alt="Logo" class="d-inline-block align-top"></a>
+        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="manage.html">Manage Data</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2 class="mt-4">Manage Data</h2>
+        <div class="table-responsive">
+            <table class="table table-striped mt-3">
+                <thead>
+                    <tr>
+                        <th>Actions</th>
+                        <th>Sr No</th>
+                        <th>Customer Name</th>
+                        <th>Mobile No</th>
+                        <th>Type</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Mode of Payment</th>
+                    </tr>
+                </thead>
+                <tbody id="dataTable">
+                    <!-- Data will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <form id="manageForm">
+            <input type="hidden" id="rowId" name="rowId">
+            <div class="form-group">
+                <label for="customerName">Customer Name</label>
+                <input type="text" class="form-control" id="customerName" name="customerName">
+            </div>
+            <div class="form-group">
+                <label for="phoneNo">Mobile No</label>
+                <input type="text" class="form-control" id="phoneNo" name="phoneNo">
+            </div>
+            <div class="form-group">
+                <label for="type">Type</label>
+                <input type="text" class="form-control" id="type" name="type">
+            </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="text" class="form-control" id="price" name="price">
+            </div>
+            <div class="form-group">
+                <label for="quantity">Quantity</label>
+                <input type="text" class="form-control" id="quantity" name="quantity">
+            </div>
+            <div class="form-group">
+                <label for="paymentMode">Mode of Payment</label>
+                <input type="text" class="form-control" id="paymentMode" name="paymentMode">
+            </div>
+            <button type="button" class="btn btn-success" onclick="updateData()">Update</button>
+        </form>
+    </div>
+
+    <!-- Modal Popup -->
+    <div class="modal fade" id="customModal" tabindex="-1" role="dialog" aria-labelledby="customModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="customModalLabel">Message</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <!-- Message will be dynamically inserted here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function showModal(message) {
+            document.getElementById('modalBody').innerText = message;
+            $('#customModal').modal('show');
+        }
+
+        function fetchData(callback) {
+            $.ajax({
+                url: 'https://script.google.com/macros/s/AKfycbzncyD_EMm70xMq_dj7yXPJ4O5hknNmSbbWd1ijUG7Og2au1zMCyjTmZOsDE5zRwlfFsA/exec?action=read',
+                method: 'GET',
+                success: function(response) {
+                    const data = JSON.parse(response);
+                    const table = $('#dataTable');
+                    table.empty();
+                    data.forEach((row, index) => {
+                        const tr = `<tr id="row-${index + 1}">
+                            <td class="actions">
+                                <button class="btn btn-warning btn-sm" onclick="editRow(${index + 1})">Edit</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteData(${index + 1})">Delete</button>
+                            </td>
+                            <td>${index + 1}</td>
+                            <td>${row[0]}</td>
+                            <td>${row[1]}</td>
+                            <td>${row[2]}</td>
+                            <td>${row[3]}</td>
+                            <td>${row[4]}</td>
+                            <td>${row[5]}</td>
+                        </tr>`;
+                        table.prepend(tr);
+                    });
+                    if (callback) callback();
+                }
+            });
+        }
+
+        function editRow(rowId) {
+            $.ajax({
+                url: 'https://script.google.com/macros/s/AKfycbzncyD_EMm70xMq_dj7yXPJ4O5hknNmSbbWd1ijUG7Og2au1zMCyjTmZOsDE5zRwlfFsA/exec?action=read&rowId=' + rowId,
+                method: 'GET',
+                success: function(response) {
+                    const data = JSON.parse(response);
+                    $('#rowId').val(rowId);
+                    $('#customerName').val(data[0]);
+                    $('#phoneNo').val(data[1]);
+                    $('#type').val(data[2]);
+                    $('#price').val(data[3]);
+                    $('#quantity').val(data[4]);
+                    $('#paymentMode').val(data[5]);
+
+                    document.getElementById('manageForm').scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        }
+
+        function updateData() {
+            const formData = $('#manageForm').serialize();
+            const rowId = $('#rowId').val();
+            $.ajax({
+                url: 'https://script.google.com/macros/s/AKfycbzncyD_EMm70xMq_dj7yXPJ4O5hknNmSbbWd1ijUG7Og2au1zMCyjTmZOsDE5zRwlfFsA/exec?action=update',
+                method: 'POST',
+                data: formData,
+                success: function(response) {
+                    showModal(response);
+                    fetchData(function() {
+                        document.getElementById('row-' + rowId).scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    });
+                }
+            });
+        }
+
+        function deleteData(rowId) {
+            $.ajax({
+                url: 'https://script.google.com/macros/s/AKfycbzncyD_EMm70xMq_dj7yXPJ4O5hknNmSbbWd1ijUG7Og2au1zMCyjTmZOsDE5zRwlfFsA/exec?action=delete&rowId=' + rowId,
+                method: 'POST',
+                success: function(response) {
+                    showModal(response);
+                    fetchData();
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            fetchData();
+        });
+    </script>
+</body>
+</html>
