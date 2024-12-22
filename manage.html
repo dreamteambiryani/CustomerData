@@ -111,7 +111,7 @@
 
         function fetchData(callback) {
             $.ajax({
-                url: 'https://script.google.com/macros/s/AKfycbzncyD_EMm70xMq_dj7yXPJ4O5hknNmSbbWd1ijUG7Og2au1zMCyjTmZOsDE5zRwlfFsA/exec?action=read',
+                url: 'https://script.google.com/macros/s/AKfycbyOvABpk5uaiqvw0ylUVvxgHwLNuj2SbygPG2Ux8LRey8M3kNOSlz0YPquSSOKYy4Yj/exec?action=read',
                 method: 'GET',
                 success: function(response) {
                     const data = JSON.parse(response);
@@ -140,7 +140,7 @@
 
         function editRow(rowId) {
             $.ajax({
-                url: 'https://script.google.com/macros/s/AKfycbzncyD_EMm70xMq_dj7yXPJ4O5hknNmSbbWd1ijUG7Og2au1zMCyjTmZOsDE5zRwlfFsA/exec?action=read&rowId=' + rowId,
+                url: 'https://script.google.com/macros/s/AKfycbyOvABpk5uaiqvw0ylUVvxgHwLNuj2SbygPG2Ux8LRey8M3kNOSlz0YPquSSOKYy4Yj/exec?action=read&rowId=' + rowId,
                 method: 'GET',
                 success: function(response) {
                     const data = JSON.parse(response);
@@ -161,7 +161,7 @@
             const formData = $('#manageForm').serialize();
             const rowId = $('#rowId').val();
             $.ajax({
-                url: 'https://script.google.com/macros/s/AKfycbzncyD_EMm70xMq_dj7yXPJ4O5hknNmSbbWd1ijUG7Og2au1zMCyjTmZOsDE5zRwlfFsA/exec?action=update',
+                url: 'https://script.google.com/macros/s/AKfycbyOvABpk5uaiqvw0ylUVvxgHwLNuj2SbygPG2Ux8LRey8M3kNOSlz0YPquSSOKYy4Yj/exec?action=update',
                 method: 'POST',
                 data: formData,
                 success: function(response) {
@@ -175,7 +175,7 @@
 
         function deleteData(rowId) {
             $.ajax({
-                url: 'https://script.google.com/macros/s/AKfycbzncyD_EMm70xMq_dj7yXPJ4O5hknNmSbbWd1ijUG7Og2au1zMCyjTmZOsDE5zRwlfFsA/exec?action=delete&rowId=' + rowId,
+                url: 'https://script.google.com/macros/s/AKfycbyOvABpk5uaiqvw0ylUVvxgHwLNuj2SbygPG2Ux8LRey8M3kNOSlz0YPquSSOKYy4Yj/exec?action=delete&rowId=' + rowId,
                 method: 'POST',
                 success: function(response) {
                     showModal(response);
