@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>View Google Sheet</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
@@ -43,15 +44,24 @@
 
         .iframe-container {
             position: absolute;
-            top: 70px; /* Increased to provide more space */
+            top: 120px; /* Adjusted to provide space for header */
             left: 0;
             width: 100%;
-            height: calc(100% - 70px); /* Adjusted to match the new top value */
+            height: calc(100% - 120px); /* Adjusted to match the new top value */
             background: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             overflow: hidden;
             transition: top 0.3s ease, height 0.3s ease; /* Add transition for smooth collapsing */
+            text-align: center; /* Center align the text within the iframe container */
+        }
+
+        .iframe-container h2 {
+            text-align: center;
+            margin-top: 20px; /* Adjust as needed for spacing */
+            margin-bottom: 20px; /* Adjust as needed for spacing */
+            font-size: 24px;
+            color: #343a40;
         }
 
         .iframe-container iframe {
@@ -99,10 +109,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="index.html">Home</a>
                 </li>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="view.html">View Google sheet</a>
-                </li>
                 
                 <li class="nav-item active">
                     <a class="nav-link" href="manage.html">Manage Data</a>
@@ -112,6 +118,7 @@
     </nav>
 
     <div class="iframe-container" id="iframeContainer">
+        <h2>Google Sheet Data</h2>
         <iframe src="https://docs.google.com/spreadsheets/d/1RZGCZ31u74tROT4nd3s2c9Dl6Tt6Cxp9iYYPJfultR0/preview?rm=minimal" loading="lazy"></iframe>
     </div>
 
