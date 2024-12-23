@@ -147,6 +147,7 @@ button:hover {
     /* Center the image */
     display: block;
     /* Ensure the image is block-level */
+    loading: lazy;
 }
 
 #vegMenu,
@@ -186,6 +187,7 @@ button:hover {
     width: 50px; /* Updated width */
     height: 50px; /* Updated height */
     border-radius: 50%;
+    loading: lazy;
 }
 
 .navbar-toggler-icon {
