@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>View Google Sheet</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #343a40;
+        }
+
+        .navbar-brand, .nav-link {
+            color: #ffffff !important;
+        }
+
+        .navbar-brand img {
+            margin-right: 10px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%287%2C%2077%2C%2021%2C%201%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+        }
+
+        .navbar-nav .nav-item .nav-link {
+            color: #ffffff;
+            margin-right: 1em;
+        }
+
+        .navbar-nav .nav-item .nav-link.active {
+            font-weight: bold;
+        }
+
+        .iframe-container {
+            position: absolute;
+            top: 70px; /* Increased to provide more space */
+            left: 0;
+            width: 100%;
+            height: calc(100% - 70px); /* Adjusted to match the new top value */
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: top 0.3s ease, height 0.3s ease; /* Add transition for smooth collapsing */
+        }
+
+        .iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            transform-origin: center;
+        }
+
+        @media (max-width: 768px) {
+            .iframe-container iframe {
+                transform: scale(0.9);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .iframe-container iframe {
+                transform: scale(0.8);
+            }
+
+            .navbar-brand img {
+                width: 50px;
+                height: 50px;
+            }
+
+            .navbar-nav .nav-item .nav-link {
+                font-size: 17px;
+                margin-right: 0.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="#">
+            <img src="images/file.png" alt="Logo" class="d-inline-block align-top">
+        </a>
+        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                
+                <li class="nav-item active">
+                    <a class="nav-link" href="manage.html">Manage Data</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="iframe-container" id="iframeContainer">
+        <iframe src="https://docs.google.com/spreadsheets/d/1RZGCZ31u74tROT4nd3s2c9Dl6Tt6Cxp9iYYPJfultR0/preview?rm=minimal" loading="lazy"></iframe>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.navbar-toggler').on('click', function () {
+                setTimeout(function() {
+                    let navbarHeight = $('.navbar').outerHeight();
+                    $('#iframeContainer').css('top', navbarHeight + 20); // Add more space between navbar and iframe
+                    $('#iframeContainer').css('height', 'calc(100% - ' + (navbarHeight + 20) + 'px)');
+                }, 300); // adjust timing to match the navbar collapse animation
+            });
+        });
+    </script>
+</body>
+</html>
