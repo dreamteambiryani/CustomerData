@@ -24,7 +24,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="index.html">Home</a>
                 </li>
-                </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="view.html">View Google sheet</a>
                 </li>
@@ -34,7 +33,6 @@
             </ul>
         </div>
     </nav>
-
     <div class="container">
         <h2 class="mt-4">Manage Data</h2>
         <div class="table-responsive">
@@ -49,6 +47,7 @@
                         <th>Price</th>
                         <th>Quantity</th>
                         <th>Mode of Payment</th>
+                        <th>Language</th>
                     </tr>
                 </thead>
                 <tbody id="dataTable">
@@ -85,10 +84,13 @@
                 <label for="paymentMode">Mode of Payment</label>
                 <input type="text" class="form-control" id="paymentMode" name="paymentMode">
             </div>
+            <div class="form-group">
+                <label for="language">Language</label>
+                <input type="text" class="form-control" id="language" name="language">
+            </div>
             <button type="button" class="btn btn-success" onclick="confirmUpdate()">Update</button>
         </form>
     </div>
-
     <!-- Modal Popup for Confirmation -->
     <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel"
         aria-hidden="true">
@@ -110,7 +112,6 @@
             </div>
         </div>
     </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
@@ -147,45 +148,73 @@
             $('#confirmationModal').modal('hide');
         });
 
-        function fetchData(callback) {
+        function fetchDataBatch(startIndex, batchSize, callback) {
             $.ajax({
-                url: 'https://script.google.com/macros/s/AKfycbyOvABpk5uaiqvw0ylUVvxgHwLNuj2SbygPG2Ux8LRey8M3kNOSlz0YPquSSOKYy4Yj/exec?action=read',
+                url: 'https://script.google.com/macros/s/AKfycbwdarDqI5EfF9IpCp42Ov6TrwbmqK43xQGhxENI2dMlvMv7lmm_sd-QXya56aoqkGBc/exec?action=read&startIndex=' + startIndex + '&batchSize=' + batchSize,
                 method: 'GET',
                 success: function (response) {
                     const data = JSON.parse(response);
                     renderTable(data);
-                    if (callback) callback();
+                    if (callback) callback(data.length < batchSize);
                 }
             });
         }
 
         function renderTable(data) {
-            const table = $('#dataTable');
-            table.empty();
+            const table = document.createDocumentFragment();
+            
+            // Reverse the data array
+            data.reverse();
+
             data.forEach((row, index) => {
-                const tr = `<tr id="row-${index + 1}">
+                const srNo = data.length - index;  // Sr No in descending order
+                const tr = document.createElement('tr');
+                tr.id = 'row-' + srNo;  // Row ID based on Sr No
+                tr.innerHTML = `
                     <td class="actions">
-                        <button class="btn btn-warning btn-sm" onclick="editRow(${index + 1})">Edit</button>
-                        <button class="btn btn-danger btn-sm" onclick="confirmDelete(${index + 1})">Delete</button>
+                        <button class="btn btn-warning btn-sm" onclick="editRow(${srNo})">Edit</button>
+                        <button class="btn btn-danger btn-sm" onclick="confirmDelete(${srNo})">Delete</button>
                     </td>
-                    <td>${index + 1}</td>
-                    <td>${row[0]}</td>
-                    <td>${row[1]}</td>
-                    <td>${row[2]}</td>
-                    <td>${row[3]}</td>
-                    <td>${row[4]}</td>
-                    <td>${row[5]}</td>
-                </tr>`;
-                table.prepend(tr); // Prepend instead of append to place new data at the top
+                    <td>${srNo}</td>  <!-- Sr No in descending order -->
+                    <td>${row[0]}</td>  <!-- Correct Customer Name -->
+                    <td>${row[1]}</td>  <!-- Correct Mobile No -->
+                    <td>${row[2]}</td>  <!-- Correct Type -->
+                    <td>${row[3]}</td>  <!-- Correct Price -->
+                    <td>${row[4]}</td>  <!-- Correct Quantity -->
+                    <td>${row[5]}</td>  <!-- Correct Mode of Payment -->
+                    <td>${row[7]}</td>  <!-- Correct Language -->
+                `;
+                table.appendChild(tr);
             });
+            const dataTable = document.getElementById('dataTable');
+            dataTable.innerHTML = '';  // Clear existing rows
+            dataTable.appendChild(table);
+        }
+
+        function loadData() {
+            let startIndex = 0;
+            const batchSize = 10; // Adjust the batch size as needed
+
+            function fetchNextBatch() {
+                fetchDataBatch(startIndex, batchSize, (isLastBatch) => {
+                    if (!isLastBatch) {
+                        startIndex += batchSize;
+                        fetchNextBatch();
+                    }
+                });
+            }
+
+            fetchNextBatch();
         }
 
         function editRow(rowId) {
-            const loadingIndicator = `<tr id="loadingIndicator"><td colspan="8">Loading...</td></tr>`;
-            $('#dataTable').append(loadingIndicator);
+            const loadingIndicator = document.createElement('tr');
+            loadingIndicator.id = 'loadingIndicator';
+            loadingIndicator.innerHTML = '<td colspan="9">Loading...</td>';
+            document.getElementById('dataTable').appendChild(loadingIndicator);
 
             $.ajax({
-                url: 'https://script.google.com/macros/s/AKfycbyOvABpk5uaiqvw0ylUVvxgHwLNuj2SbygPG2Ux8LRey8M3kNOSlz0YPquSSOKYy4Yj/exec?action=read&rowId=' + rowId,
+                url: 'https://script.google.com/macros/s/AKfycbwdarDqI5EfF9IpCp42Ov6TrwbmqK43xQGhxENI2dMlvMv7lmm_sd-QXya56aoqkGBc/exec?action=read&rowId=' + rowId,
                 method: 'GET',
                 success: function (response) {
                     $('#loadingIndicator').remove();
@@ -197,6 +226,7 @@
                     $('#price').val(data[3]);
                     $('#quantity').val(data[4]);
                     $('#paymentMode').val(data[5]);
+                    $('#language').val(data[7]);  // Corrected Language field
 
                     document.getElementById('manageForm').scrollIntoView({ behavior: 'smooth' });
                 }
@@ -207,14 +237,13 @@
             const formData = $('#manageForm').serialize();
             const rowId = $('#rowId').val();
             showModal("Updating data...", "success"); // Show updating status immediately
-
             $.ajax({
-                url: 'https://script.google.com/macros/s/AKfycbyOvABpk5uaiqvw0ylUVvxgHwLNuj2SbygPG2Ux8LRey8M3kNOSlz0YPquSSOKYy4Yj/exec?action=update',
+                url: 'https://script.google.com/macros/s/AKfycbwdarDqI5EfF9IpCp42Ov6TrwbmqK43xQGhxENI2dMlvMv7lmm_sd-QXya56aoqkGBc/exec?action=update',
                 method: 'POST',
                 data: formData,
                 success: function (response) {
                     showModal(response, "success");
-                    fetchData(function () {
+                    fetchDataBatch(0, 10, () => { // Reload the first batch of data
                         document.getElementById('row-' + rowId).scrollIntoView({ behavior: 'smooth', block: 'center' });
                     });
                 }
@@ -226,19 +255,20 @@
             $('#row-' + rowId).remove(); // Immediately remove the row for faster UI update
 
             $.ajax({
-                url: 'https://script.google.com/macros/s/AKfycbyOvABpk5uaiqvw0ylUVvxgHwLNuj2SbygPG2Ux8LRey8M3kNOSlz0YPquSSOKYy4Yj/exec?action=delete&rowId=' + rowId,
+                url: 'https://script.google.com/macros/s/AKfycbwdarDqI5EfF9IpCp42Ov6TrwbmqK43xQGhxENI2dMlvMv7lmm_sd-QXya56aoqkGBc/exec?action=delete&rowId=' + rowId,
                 method: 'POST',
                 success: function (response) {
                     showModal(response, "success");
-                    fetchData();
+                    fetchDataBatch(0, 10); // Reload the first batch of data
                 }
             });
         }
 
         $(document).ready(function () {
-            fetchData();
+            loadData();
         });
     </script>
+
 
 </body>
 

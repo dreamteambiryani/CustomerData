@@ -19,6 +19,7 @@ body {
     transition: all 0.3s ease-in-out; /* Add transition for smooth effect */
 }
 
+
 h2 {
     color: #333;
     font-size: 24px;
@@ -168,6 +169,7 @@ button:hover {
     display: inline-block;
     /* Ensure checkboxes and numbers are visible */
 }
+
 
 /* Navigation Header styles */
 .navbar {
