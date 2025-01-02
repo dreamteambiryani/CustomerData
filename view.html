@@ -1,110 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>View Google Sheet</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Google Sheet Data</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="css/view-google-sheet.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f8f8f8;
-            margin: 0;
-            padding: 0;
-        }
-
-        .navbar {
-            background-color: #343a40;
-        }
-
-        .navbar-brand, .nav-link {
-            color: #ffffff !important;
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
         }
 
         .navbar-brand img {
-            margin-right: 10px;
             width: 50px;
             height: 50px;
-            border-radius: 50%;
         }
 
-        .navbar-toggler-icon {
-            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%287%2C%2077%2C%2021%2C%201%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+        .accordion .card-header {
+            background-color: #007bff;
+            color: #fff;
         }
 
-        .navbar-nav .nav-item .nav-link {
-            color: #ffffff;
-            margin-right: 1em;
+        .accordion .btn-link {
+            color: #fff;
+            text-decoration: none;
         }
 
-        .navbar-nav .nav-item .nav-link.active {
+        .accordion .btn-link:hover {
+            text-decoration: underline;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table-bordered th,
+        .table-bordered td {
+            border: 1px solid #dee2e6;
+        }
+
+        .table thead th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .table-bordered {
+            border: 1px solid #dee2e6;
+        }
+
+        .card-body {
+            padding: 1.25rem;
+            background-color: #fff;
+        }
+
+        .card-header h2,
+        .card-header h2 .btn-link {
+            font-size: 1.25rem;
             font-weight: bold;
         }
-
-        .iframe-container {
-            position: absolute;
-            top: 120px; /* Adjusted to provide space for header */
-            left: 0;
-            width: 100%;
-            height: calc(100% - 120px); /* Adjusted to match the new top value */
-            background: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            overflow: hidden;
-            transition: top 0.3s ease, height 0.3s ease; /* Add transition for smooth collapsing */
-            text-align: center; /* Center align the text within the iframe container */
-        }
-
-        .iframe-container h2 {
-            text-align: center;
-            margin-top: 20px; /* Adjust as needed for spacing */
-            margin-bottom: 20px; /* Adjust as needed for spacing */
-            font-size: 24px;
-            color: #343a40;
-        }
-
-        .iframe-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            transform-origin: center;
-        }
-
-        @media (max-width: 768px) {
-            .iframe-container iframe {
-                transform: scale(0.9);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .iframe-container iframe {
-                transform: scale(0.8);
-            }
-
-            .navbar-brand img {
-                width: 50px;
-                height: 50px;
-            }
-
-            .navbar-nav .nav-item .nav-link {
-                font-size: 17px;
-                margin-right: 0.5em;
-            }
-        }
     </style>
-    <link rel="preconnect" href="https://docs.google.com">
-    <link rel="preconnect" href="https://stackpath.bootstrapcdn.com">
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 </head>
+
 <body>
     <!-- Navigation Header -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <a class="navbar-brand" href="#">
-            <img src="images/file.png" alt="Logo" class="d-inline-block align-top">
-        </a>
-        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <img src="images/file.png" alt="Logo" class="rounded-circle" loading="lazy"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
@@ -112,31 +80,157 @@
                 <li class="nav-item">
                     <a class="nav-link" href="index.html">Home</a>
                 </li>
-                
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="manage.html">Manage Data</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="view.html">View Google Sheet Data</a>
                 </li>
             </ul>
         </div>
     </nav>
 
-    <div class="iframe-container" id="iframeContainer">
-        <h2>Google Sheet Data</h2>
-        <iframe src="https://docs.google.com/spreadsheets/d/1RZGCZ31u74tROT4nd3s2c9Dl6Tt6Cxp9iYYPJfultR0/preview?rm=minimal" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+    <div class="container mt-5 pt-5">
+        <div class="accordion" id="dataAccordion">
+            <div class="card">
+                <div class="card-header" id="headingCustomerData">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse"
+                            data-target="#collapseCustomerData" aria-expanded="true"
+                            aria-controls="collapseCustomerData">
+                            <i class="fas fa-users"></i> Customer Data
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseCustomerData" class="collapse show" aria-labelledby="headingCustomerData"
+                    data-parent="#dataAccordion">
+                    <div class="card-body">
+                        <div id="customer-data" class="table-responsive"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingSalesData">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                            data-target="#collapseSalesData" aria-expanded="false" aria-controls="collapseSalesData">
+                            <i class="fas fa-chart-line"></i> Sales Data
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseSalesData" class="collapse" aria-labelledby="headingSalesData"
+                    data-parent="#dataAccordion">
+                    <div class="card-body">
+                        <div id="sales-data" class="table-responsive"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingTypeOfFoodData">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                            data-target="#collapseTypeOfFoodData" aria-expanded="false"
+                            aria-controls="collapseTypeOfFoodData">
+                            <i class="fas fa-utensils"></i> Type Of Food Data
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseTypeOfFoodData" class="collapse" aria-labelledby="headingTypeOfFoodData"
+                    data-parent="#dataAccordion">
+                    <div class="card-body">
+                        <div id="type-of-food-data" class="table-responsive"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingPaymentModeData">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                            data-target="#collapsePaymentModeData" aria-expanded="false"
+                            aria-controls="collapsePaymentModeData">
+                            <i class="fas fa-money-check-alt"></i> Payment Mode Data
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapsePaymentModeData" class="collapse" aria-labelledby="headingPaymentModeData"
+                    data-parent="#dataAccordion">
+                    <div class="card-body">
+                        <div id="payment-mode-data" class="table-responsive"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('.navbar-toggler').on('click', function () {
-                setTimeout(function() {
-                    let navbarHeight = $('.navbar').outerHeight();
-                    $('#iframeContainer').css('top', navbarHeight + 20); // Add more space between navbar and iframe
-                    $('#iframeContainer').css('height', 'calc(100% - ' + (navbarHeight + 20) + 'px)');
-                }, 300); // adjust timing to match the navbar collapse animation
-            });
+            fetchData('CustomerData', 'customer-data', true);
+            fetchData('Sales', 'sales-data');
+            fetchData('TypeOfFood', 'type-of-food-data');
+            fetchData('Payment', 'payment-mode-data');
         });
+
+        function fetchData(sheetName, elementId, filterToday = false) {
+            const url = `https://script.google.com/macros/s/AKfycbxERBzPWhjnvb2bY-3Ho237uqEkYeVEUny0VQtfSc8DOhl_soFaqKZweEpIpro0Levb/exec?action=read&sheet=${sheetName}`;
+
+            $.getJSON(url, function (data) {
+                console.log(`Fetched data from ${sheetName}:`, data); // Debugging: Log the fetched data
+
+                if (filterToday) {
+                    const today = new Date().toLocaleDateString('en-US'); // Format: MM/DD/YYYY
+                    data = data.filter(row => {
+                        const rowDate = new Date(row[6]).toLocaleDateString('en-US'); // Assuming the date is in the 7th column (index 6)
+                        return rowDate === today;
+                    });
+                    console.log(`Filtered data for today (${today}) from ${sheetName}:`, data); // Debugging: Log the filtered data
+                }
+                displayTable(data, elementId, sheetName);
+            }).fail(function (jqxhr, textStatus, error) {
+                const err = textStatus + ", " + error;
+                console.error("Request Failed: " + err);
+                $(`#${elementId}`).html(`<p class="text-center text-danger">Failed to fetch data from Google Sheets. Error: ${err}</p>`);
+            });
+        }
+
+        function displayTable(data, elementId, sheetName) {
+            if (!data || data.length === 0) {
+                $(`#${elementId}`).html('<p class="text-center text-warning">No data found in the specified range.</p>');
+                return;
+            }
+
+            let headers;
+            let filteredData = data;
+
+            if (sheetName === 'CustomerData') {
+                headers = ["Customer Name", "Mobile No", "Type", "Price", "Quantity", "Mode of Payment", "Date & Time", "Language"];
+            } else if (sheetName === 'Sales') {
+                headers = [data[0][5], data[0][6]]; // Use headers from the first row (actual header names)
+                filteredData = data.slice(1).map(row => [row[5], row[6]]); // Extracting only F and G columns (index 5 and 6)
+            } else {
+                headers = data[0];
+                filteredData = data.slice(1);
+            }
+
+            let table = '<table class="table table-striped table-bordered">';
+            table += '<thead><tr>';
+            headers.forEach(header => {
+                table += `<th>${header}</th>`;
+            });
+            table += '</tr></thead><tbody>';
+
+            filteredData.forEach(row => {
+                table += '<tr>';
+                row.forEach(cell => {
+                    if (cell !== null && cell !== undefined && cell !== "") {
+                        table += `<td>${cell}</td>`;
+                    }
+                });
+                table += '</tr>';
+            });
+            table += '</tbody></table>';
+            $(`#${elementId}`).html(table);
+        }
     </script>
 </body>
+
 </html>

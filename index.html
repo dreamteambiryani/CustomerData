@@ -12,64 +12,23 @@
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <style>
-        /* Modal styles */
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1000; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgb(0,0,0); /* Fallback color */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto; /* 15% from the top and centered */
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%; /* Could be more or less, depending on screen size */
-            max-width: 300px; /* Ensure it doesn't get too wide */
-            border-radius: 10px; /* Add rounded corners */
-            text-align: center;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-    </style>
 </head>
 
 <body>
     <!-- Navigation Header -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <a class="navbar-brand" href="#">
-            <img src="images/file.png" alt="Logo" class="d-inline-block align-top">
+            <img src="images/file.png" alt="Logo" class="rounded-circle" width="50" height="50" loading="lazy">
         </a>
-        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="index.html">Home</a>
+                <li class="nav-item">
+                    <a class="nav-link active" href="index.html">Home</a>
                 </li>
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="view.html">View Google sheet</a>
                 </li>
                 <li class="nav-item">
@@ -83,80 +42,109 @@
         <h2>Dream Team Biryani House</h2>
         <h3>Customer and Sales Data</h3>
         <form id="biryaniForm">
-            <label for="customerName">Customer Name</label>
-            <input type="text" id="customerName" name="customerName" >
-
-            <label for="phoneNo">Phone No</label>
-            <input type="text" id="phoneNo" name="phoneNo" pattern="\d{10}" oninput="validatePhoneNumber(this)"
-                inputmode="numeric" >
-
-            <label for="language">Language</label>
-            <div class="radio-group">
-                <input type="radio" id="english" name="language" value="English" required>
-                <label for="english">English</label>
-            </div>
-            <div class="radio-group">
-                <input type="radio" id="hindi" name="language" value="Hindi" required>
-                <label for="hindi">Hindi</label>
-            </div>
-            <div class="radio-group">
-                <input type="radio" id="marathi" name="language" value="Marathi" required>
-                <label for="marathi">Marathi</label>
+            <div class="form-group">
+                <label for="customerName">Customer Name</label>
+                <input type="text" id="customerName" name="customerName" class="form-control">
             </div>
 
-            <label for="quantity">Quantity* (Select Veg or Non-Veg first)</label>
-            <div class="radio-group">
-                <input type="radio" id="veg" name="menuType" value="Veg" required onclick="toggleMenu('Veg')">
-                <label for="veg">Veg</label>
-            </div>
-            <div class="radio-group">
-                <input type="radio" id="nonVeg" name="menuType" value="NonVeg" required onclick="toggleMenu('NonVeg')">
-                <label for="nonVeg">Non-Veg</label>
-            </div>
-            <div id="vegMenu" style="display:none;">
-                <label for="vegFullPlate">Full Plate (120rs)</label>
-                <input type="checkbox" id="vegFullPlate" name="vegFullPlate" value="Full - 120rs">
-                <input type="number" min="0" id="vegFullPlateQty" name="vegFullPlateQty" class="quantity"
-                    placeholder="Qty">
-                <label for="vegHalfPlate">Half Plate (70rs)</label>
-                <input type="checkbox" id="vegHalfPlate" name="vegHalfPlate" value="Half - 70rs">
-                <input type="number" min="0" id="vegHalfPlateQty" name="vegHalfPlateQty" class="quantity"
-                    placeholder="Qty">
-                <label for="vegQuarterPlate">1/4 Plate (40rs)</label>
-                <input type="checkbox" id="vegQuarterPlate" name="vegQuarterPlate" value="Quarter - 40rs">
-                <input type="number" min="0" id="vegQuarterPlateQty" name="vegQuarterPlateQty" class="quantity"
-                    placeholder="Qty">
+            <div class="form-group">
+                <label for="phoneNo">Phone No</label>
+                <input type="text" id="phoneNo" name="phoneNo" pattern="\d{10}" class="form-control"
+                    inputmode="numeric">
             </div>
 
-            <div id="nonVegMenu" style="display:none;">
-                <label for="nonVegFullPlate">Full Plate (130rs)</label>
-                <input type="checkbox" id="nonVegFullPlate" name="nonVegFullPlate" value="Full - 130rs">
-                <input type="number" min="0" id="nonVegFullPlateQty" name="nonVegFullPlateQty" class="quantity"
-                    placeholder="Qty">
-
-                <label for="nonVegHalfPlate">Half Plate (80rs)</label>
-                <input type="checkbox" id="nonVegHalfPlate" name="nonVegHalfPlate" value="Half - 80rs">
-                <input type="number" min="0" id="nonVegHalfPlateQty" name="nonVegHalfPlateQty" class="quantity"
-                    placeholder="Qty">
-
-                <label for="nonVegQuarterPlate">1/4 Plate (45rs)</label>
-                <input type="checkbox" id="nonVegQuarterPlate" name="nonVegQuarterPlate" value="Quarter - 45rs">
-                <input type="number" min="0" id="nonVegQuarterPlateQty" name="nonVegQuarterPlateQty" class="quantity"
-                    placeholder="Qty">
+            <div class="form-group">
+                <label>Language</label>
+                <div class="form-check">
+                    <input type="radio" id="english" name="language" value="English" class="form-check-input" required>
+                    <label for="english" class="form-check-label">English</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" id="hindi" name="language" value="Hindi" class="form-check-input" required>
+                    <label for="hindi" class="form-check-label">Hindi</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" id="marathi" name="language" value="Marathi" class="form-check-input" required>
+                    <label for="marathi" class="form-check-label">Marathi</label>
+                </div>
             </div>
 
-            <label for="paymentMode">Payment Mode*</label>
-            <div class="radio-group">
-                <input type="radio" id="online" name="paymentMode" value="Online" required>
-                <label for="online">Online</label>
-                <img src="images/payment.jpeg" alt="Payment QR Code" class="qr-code">
-            </div>
-            <div class="radio-group">
-                <input type="radio" id="cash" name="paymentMode" value="Cash" required>
-                <label for="cash">Cash</label>
+            <div class="form-group">
+                <label>Quantity* (Select Veg or Non-Veg first)</label>
+                <div class="form-check">
+                    <input type="radio" id="veg" name="menuType" value="Veg" class="form-check-input" required
+                        onclick="toggleMenu('Veg')">
+                    <label for="veg" class="form-check-label">Veg</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" id="nonVeg" name="menuType" value="NonVeg" class="form-check-input" required
+                        onclick="toggleMenu('NonVeg')">
+                    <label for="nonVeg" class="form-check-label">Non-Veg</label>
+                </div>
             </div>
 
-            <button type="submit">Submit</button>
+            <div id="vegMenu" class="menu-options" style="display:none;">
+                <div class="form-check">
+                    <input type="checkbox" id="vegFullPlate" name="vegFullPlate" value="Full - 120rs"
+                        class="form-check-input">
+                    <label for="vegFullPlate" class="form-check-label">Full Plate (120rs)</label>
+                    <input type="number" min="0" id="vegFullPlateQty" name="vegFullPlateQty"
+                        class="form-control quantity" placeholder="Qty">
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" id="vegHalfPlate" name="vegHalfPlate" value="Half - 70rs"
+                        class="form-check-input">
+                    <label for="vegHalfPlate" class="form-check-label">Half Plate (70rs)</label>
+                    <input type="number" min="0" id="vegHalfPlateQty" name="vegHalfPlateQty"
+                        class="form-control quantity" placeholder="Qty">
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" id="vegQuarterPlate" name="vegQuarterPlate" value="Quarter - 40rs"
+                        class="form-check-input">
+                    <label for="vegQuarterPlate" class="form-check-label">1/4 Plate (40rs)</label>
+                    <input type="number" min="0" id="vegQuarterPlateQty" name="vegQuarterPlateQty"
+                        class="form-control quantity" placeholder="Qty">
+                </div>
+            </div>
+
+            <div id="nonVegMenu" class="menu-options" style="display:none;">
+                <div class="form-check">
+                    <input type="checkbox" id="nonVegFullPlate" name="nonVegFullPlate" value="Full - 130rs"
+                        class="form-check-input">
+                    <label for="nonVegFullPlate" class="form-check-label">Full Plate (130rs)</label>
+                    <input type="number" min="0" id="nonVegFullPlateQty" name="nonVegFullPlateQty"
+                        class="form-control quantity" placeholder="Qty">
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" id="nonVegHalfPlate" name="nonVegHalfPlate" value="Half - 80rs"
+                        class="form-check-input">
+                    <label for="nonVegHalfPlate" class="form-check-label">Half Plate (80rs)</label>
+                    <input type="number" min="0" id="nonVegHalfPlateQty" name="nonVegHalfPlateQty"
+                        class="form-control quantity" placeholder="Qty">
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" id="nonVegQuarterPlate" name="nonVegQuarterPlate" value="Quarter - 45rs"
+                        class="form-check-input">
+                    <label for="nonVegQuarterPlate" class="form-check-label">1/4 Plate (45rs)</label>
+                    <input type="number" min="0" id="nonVegQuarterPlateQty" name="nonVegQuarterPlateQty"
+                        class="form-control quantity" placeholder="Qty">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Payment Mode*</label>
+                <div class="form-check">
+                    <input type="radio" id="online" name="paymentMode" value="Online" class="form-check-input" required>
+                    <label for="online" class="form-check-label">Online</label>
+                    <img src="images/payment.jpeg" alt="Payment QR Code" class="img-fluid qr-code">
+                </div>
+                <div class="form-check">
+                    <input type="radio" id="cash" name="paymentMode" value="Cash" class="form-check-input" required>
+                    <label for="cash" class="form-check-label">Cash</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success">Submit</button>
         </form>
     </div>
 
@@ -170,133 +158,84 @@
 
     <script>
         function toggleMenu(menuType) {
-            var vegMenu = document.getElementById("vegMenu");
-            var nonVegMenu = document.getElementById("nonVegMenu");
-            if (menuType === "Veg") {
-                vegMenu.style.display = "block";
-                nonVegMenu.style.display = "none";
-            } else if (menuType === "NonVeg") {
-                vegMenu.style.display = "none";
-                nonVegMenu.style.display = "block";
-            }
+            document.getElementById("vegMenu").style.display = (menuType === "Veg") ? "block" : "none";
+            document.getElementById("nonVegMenu").style.display = (menuType === "NonVeg") ? "block" : "none";
         }
-    
+
         function validateCheckboxGroup(checkboxGroup) {
-            for (var i = 0; i < checkboxGroup.length; i++) {
-                if (checkboxGroup[i].checked) {
-                    return true;
-                }
-            }
-            return false;
+            return Array.from(checkboxGroup).some(checkbox => checkbox.checked);
         }
-    
+
         function validateRadioGroup(radioGroup) {
-            for (var i = 0; i < radioGroup.length; i++) {
-                if (radioGroup[i].checked) {
-                    return true;
-                }
-            }
-            return false;
+            return Array.from(radioGroup).some(radio => radio.checked);
         }
-    
+
         function showAlert(message) {
-            var modal = document.getElementById("alertModal");
-            var alertMessage = document.getElementById("alertMessage");
-            var close = document.getElementsByClassName("close")[0];
-    
+            const modal = document.getElementById("alertModal");
+            const alertMessage = document.getElementById("alertMessage");
             alertMessage.textContent = message;
             modal.style.display = "block";
-    
-            close.onclick = function() {
-                modal.style.display = "none";
-            }
-    
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
-            }
         }
-    
+
         document.addEventListener("DOMContentLoaded", function () {
-            var formContainer = document.getElementById('formContainer');
-            var navbarToggler = document.querySelector('.navbar-toggler');
-    
-            navbarToggler.addEventListener('click', function () {
-                formContainer.classList.toggle('show-form');
-            });
-    
-            var form = document.getElementById("biryaniForm");
+            const form = document.getElementById("biryaniForm");
             form.addEventListener("submit", async function (event) {
-                event.preventDefault(); // Prevent the default form submission
-    
-                var allFieldsFilled = true;
-    
-                // Check if at least one radio button is selected in language group
-                var languageRadios = form.querySelectorAll("input[name='language']");
-                if (!validateRadioGroup(languageRadios)) {
+                event.preventDefault();
+                const phoneInput = document.getElementById("phoneNo");
+                let phoneNumber = phoneInput.value.trim();
+
+                if (!validateRadioGroup(document.querySelectorAll("input[name='language']"))) {
                     showAlert("Please select a language.");
-                    allFieldsFilled = false;
                     return;
                 }
-    
-                // Check if at least one radio button is selected in payment mode group
-                var paymentModeRadios = form.querySelectorAll("input[name='paymentMode']");
-                if (!validateRadioGroup(paymentModeRadios)) {
+
+                if (!validateRadioGroup(document.querySelectorAll("input[name='paymentMode']"))) {
                     showAlert("Please select a payment mode.");
-                    allFieldsFilled = false;
                     return;
                 }
-    
-                // Check if at least one veg or non-veg checkbox is selected
-                var vegCheckboxes = form.querySelectorAll("#vegMenu input[type='checkbox']");
-                var nonVegCheckboxes = form.querySelectorAll("#nonVegMenu input[type='checkbox']");
-                if (!validateCheckboxGroup(vegCheckboxes) && !validateCheckboxGroup(nonVegCheckboxes)) {
+
+                if (!validateCheckboxGroup(document.querySelectorAll("#vegMenu input[type='checkbox']")) &&
+                    !validateCheckboxGroup(document.querySelectorAll("#nonVegMenu input[type='checkbox']"))) {
                     showAlert("Please select at least one option from Veg or Non-Veg menu.");
-                    allFieldsFilled = false;
                     return;
                 }
-    
-                if (allFieldsFilled) {
-                    var phoneInput = document.getElementById("phoneNo");
-                    var phoneNumber = phoneInput.value.trim();
-    
-                    // Add the country code if not present
-                    if (!phoneNumber.startsWith("91")) {
-                        phoneNumber = "91" + phoneNumber;
-                    }
-    
-                    // Update the phone input value
+
+                if (!phoneNumber.startsWith("91")) {
+                    phoneNumber = "91" + phoneNumber;
                     phoneInput.value = phoneNumber;
-    
-                    // Create a hidden input to hold the full phone number with the country code
-                    var hiddenPhoneInput = document.createElement("input");
-                    hiddenPhoneInput.type = "hidden";
-                    hiddenPhoneInput.name = "fullPhoneNo";
-                    hiddenPhoneInput.value = phoneNumber;
-    
-                    // Append the hidden input to the form
-                    form.appendChild(hiddenPhoneInput);
-    
-                    // Continue with form submission
-                    var formData = new FormData(form);
-                    try {
-                        const response = await fetch("https://script.google.com/macros/s/AKfycbwdarDqI5EfF9IpCp42Ov6TrwbmqK43xQGhxENI2dMlvMv7lmm_sd-QXya56aoqkGBc/exec", {
-                            method: "POST",
-                            body: formData
-                        });
-                        const responseText = await response.text();
-                        window.location.href = "result.html?status=" + encodeURIComponent(responseText);
-                    } catch (error) {
-                        console.error("Error:", error);
-                        window.location.href = "result.html?status=" + encodeURIComponent("Failed to submit data.");
-                    }
+                }
+
+                const hiddenPhoneInput = document.createElement("input");
+                hiddenPhoneInput.type = "hidden";
+                hiddenPhoneInput.name = "fullPhoneNo";
+                hiddenPhoneInput.value = phoneNumber;
+                form.appendChild(hiddenPhoneInput);
+
+                const formData = new FormData(form);
+                try {
+                    const response = await fetch("https://script.google.com/macros/s/AKfycbxERBzPWhjnvb2bY-3Ho237uqEkYeVEUny0VQtfSc8DOhl_soFaqKZweEpIpro0Levb/exec", {
+                        method: "POST",
+                        body: formData
+                    });
+                    const responseText = await response.text();
+                    window.location.href = "result.html?status=" + encodeURIComponent(responseText);
+                } catch (error) {
+                    console.error("Error:", error);
+                    window.location.href = "result.html?status=" + encodeURIComponent("Failed to submit data.");
                 }
             });
+
+            document.querySelector(".close").onclick = function () {
+                document.getElementById("alertModal").style.display = "none";
+            };
+
+            window.onclick = function (event) {
+                if (event.target == document.getElementById("alertModal")) {
+                    document.getElementById("alertModal").style.display = "none";
+                }
+            };
         });
     </script>
-    
-    
-    
 </body>
-</html>    
+
+</html>

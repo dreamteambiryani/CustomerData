@@ -93,7 +93,6 @@ body {
     border: none;
 }
 
-/* Responsive design */
 @media (max-width: 576px) {
     .navbar-brand img {
         width: 50px;

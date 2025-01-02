@@ -1,4 +1,3 @@
-/* General styles for larger screens */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f8f8f8;
@@ -15,10 +14,9 @@ body {
     width: 90%;
     max-width: 400px;
     text-align: center;
-    margin-top: 20px; /* Adjusted margin to avoid overlap */
-    transition: all 0.3s ease-in-out; /* Add transition for smooth effect */
+    margin-top: 20px;
+    transition: all 0.3s ease-in-out;
 }
-
 
 h2 {
     color: #333;
@@ -29,12 +27,6 @@ h3 {
     color: #777;
     margin-bottom: 20px;
     font-size: 18px;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 label {
@@ -60,17 +52,14 @@ input[type="tel"] {
 
 input[type="number"].quantity {
     width: 60px;
-    /* Adjust the size of the quantity text box */
 }
 
-/* Hide the arrows for number inputs in Webkit browsers (Chrome, Safari, etc.) */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 
-/* Hide the arrows for number inputs in Mozilla Firefox */
 input[type="number"] {
     -moz-appearance: textfield;
 }
@@ -106,7 +95,6 @@ input[type="checkbox"]+label::before {
 input[type="radio"]:checked+label::before,
 input[type="checkbox"]:checked+label::before {
     content: '\2714';
-    /* Checkmark symbol */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -143,11 +131,8 @@ button:hover {
 
 .qr-code {
     width: 145px;
-    /* Increase the size of the image */
     margin: 10px auto;
-    /* Center the image */
     display: block;
-    /* Ensure the image is block-level */
     loading: lazy;
 }
 
@@ -166,12 +151,8 @@ button:hover {
 #nonVegMenu input[type="checkbox"],
 #nonVegMenu input[type="number"] {
     margin-right: 10px;
-    display: inline-block;
-    /* Ensure checkboxes and numbers are visible */
 }
 
-
-/* Navigation Header styles */
 .navbar {
     background-color: #343a40;
     position: fixed;
@@ -182,14 +163,6 @@ button:hover {
 
 .navbar-brand, .nav-link {
     color: #ffffff !important;
-}
-
-.navbar-brand img {
-    margin-right: 10px;
-    width: 50px; /* Updated width */
-    height: 50px; /* Updated height */
-    border-radius: 50%;
-    loading: lazy;
 }
 
 .navbar-toggler-icon {
@@ -205,10 +178,9 @@ button:hover {
     font-weight: bold;
 }
 
-/* Slide-down effect for small screens */
 @media (max-width: 576px) {
     .show-form {
-        margin-top: 120px !important; /* Adjusted margin to show the form */
+        margin-top: 120px !important;
     }
 
     .navbar-brand img {

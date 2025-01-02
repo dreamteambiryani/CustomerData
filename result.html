@@ -5,20 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submission Status</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="css/result.css">
 </head>
 <body>
     <div class="container">
-        <h2>Submission Status</h2>
-        <p id="statusMessage"></p>
-        <button onclick="goBack()">Back to Home</button>
+        <div class="status-card">
+            <h2>Submission Status</h2>
+            <p id="statusMessage"></p>
+            <button onclick="goBack()"><i class="fas fa-home"></i> Back to Home</button>
+        </div>
     </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const params = new URLSearchParams(window.location.search);
             const status = params.get("status");
-            document.getElementById("statusMessage").textContent = status;
+            document.getElementById("statusMessage").textContent = status || "No status available.";
         });
 
         function goBack() {
