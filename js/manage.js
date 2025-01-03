@@ -1,4 +1,3 @@
-
 let actionType;
 let currentRowId;
 
@@ -7,11 +6,7 @@ function showModal(message, action) {
     document.getElementById('confirmationModalBody').innerText = message;
     $('#confirmationModal').modal('show');
 
-    if (action === "success") {
-        document.getElementById('confirmAction').style.display = "none";
-    } else {
-        document.getElementById('confirmAction').style.display = "inline-block";
-    }
+    document.getElementById('confirmAction').style.display = action === "success" ? "none" : "inline-block";
 }
 
 function confirmUpdate() {
@@ -23,7 +18,7 @@ function confirmDelete(rowId) {
     showModal("Are you sure you want to delete this data?", "delete");
 }
 
-document.getElementById('confirmAction').addEventListener('click', function () {
+document.getElementById('confirmAction').addEventListener('click', () => {
     if (actionType === "update") {
         updateData();
     } else if (actionType === "delete") {
@@ -32,52 +27,47 @@ document.getElementById('confirmAction').addEventListener('click', function () {
     $('#confirmationModal').modal('hide');
 });
 
-function fetchDataBatch(startIndex, batchSize, callback) {
-    $.ajax({
-        url: 'https://script.google.com/macros/s/AKfycbwdarDqI5EfF9IpCp42Ov6TrwbmqK43xQGhxENI2dMlvMv7lmm_sd-QXya56aoqkGBc/exec?action=read&startIndex=' + startIndex + '&batchSize=' + batchSize,
-        method: 'GET',
-        success: function (response) {
-            const data = JSON.parse(response);
-            renderTable(data);
-            if (callback) callback(data.length < batchSize);
-        }
-    });
+async function fetchDataBatch(startIndex, batchSize, callback) {
+    try {
+        const response = await fetch(`https://script.google.com/macros/s/AKfycbwdarDqI5EfF9IpCp42Ov6TrwbmqK43xQGhxENI2dMlvMv7lmm_sd-QXya56aoqkGBc/exec?action=read&startIndex=${startIndex}&batchSize=${batchSize}`);
+        const data = await response.json();
+        renderTable(data);
+        if (callback) callback(data.length < batchSize);
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
 }
 
 function renderTable(data) {
     const table = document.createDocumentFragment();
-    
-    // Reverse the data array
-    data.reverse();
-
-    data.forEach((row, index) => {
-        const srNo = data.length - index;  // Sr No in descending order
+    data.reverse().forEach((row, index) => {
+        const srNo = data.length - index;
         const tr = document.createElement('tr');
-        tr.id = 'row-' + srNo;  // Row ID based on Sr No
+        tr.id = 'row-' + srNo;
         tr.innerHTML = `
             <td class="actions">
                 <button class="btn btn-warning btn-sm" onclick="editRow(${srNo})">Edit</button>
                 <button class="btn btn-danger btn-sm" onclick="confirmDelete(${srNo})">Delete</button>
             </td>
-            <td>${srNo}</td>  <!-- Sr No in descending order -->
-            <td>${row[0]}</td>  <!-- Correct Customer Name -->
-            <td>${row[1]}</td>  <!-- Correct Mobile No -->
-            <td>${row[2]}</td>  <!-- Correct Type -->
-            <td>${row[3]}</td>  <!-- Correct Price -->
-            <td>${row[4]}</td>  <!-- Correct Quantity -->
-            <td>${row[5]}</td>  <!-- Correct Mode of Payment -->
-            <td>${row[7]}</td>  <!-- Correct Language -->
+            <td>${srNo}</td>
+            <td>${row[0]}</td>
+            <td>${row[1]}</td>
+            <td>${row[2]}</td>
+            <td>${row[3]}</td>
+            <td>${row[4]}</td>
+            <td>${row[5]}</td>
+            <td>${row[7]}</td>
         `;
         table.appendChild(tr);
     });
     const dataTable = document.getElementById('dataTable');
-    dataTable.innerHTML = '';  // Clear existing rows
+    dataTable.innerHTML = '';
     dataTable.appendChild(table);
 }
 
 function loadData() {
     let startIndex = 0;
-    const batchSize = 10; // Adjust the batch size as needed
+    const batchSize = 10;
 
     function fetchNextBatch() {
         fetchDataBatch(startIndex, batchSize, (isLastBatch) => {
@@ -91,63 +81,67 @@ function loadData() {
     fetchNextBatch();
 }
 
-function editRow(rowId) {
+async function editRow(rowId) {
     const loadingIndicator = document.createElement('tr');
     loadingIndicator.id = 'loadingIndicator';
     loadingIndicator.innerHTML = '<td colspan="9">Loading...</td>';
     document.getElementById('dataTable').appendChild(loadingIndicator);
 
-    $.ajax({
-        url: 'https://script.google.com/macros/s/AKfycbwdarDqI5EfF9IpCp42Ov6TrwbmqK43xQGhxENI2dMlvMv7lmm_sd-QXya56aoqkGBc/exec?action=read&rowId=' + rowId,
-        method: 'GET',
-        success: function (response) {
-            $('#loadingIndicator').remove();
-            const data = JSON.parse(response);
-            $('#rowId').val(rowId);
-            $('#customerName').val(data[0]);
-            $('#phoneNo').val(data[1]);
-            $('#type').val(data[2]);
-            $('#price').val(data[3]);
-            $('#quantity').val(data[4]);
-            $('#paymentMode').val(data[5]);
-            $('#language').val(data[7]);  // Corrected Language field
+    try {
+        const response = await fetch(`https://script.google.com/macros/s/AKfycbwdarDqI5EfF9IpCp42Ov6TrwbmqK43xQGhxENI2dMlvMv7lmm_sd-QXya56aoqkGBc/exec?action=read&rowId=${rowId}`);
+        const data = await response.json();
+        $('#loadingIndicator').remove();
+        $('#rowId').val(rowId);
+        $('#customerName').val(data[0]);
+        $('#phoneNo').val(data[1]);
+        $('#type').val(data[2]);
+        $('#price').val(data[3]);
+        $('#quantity').val(data[4]);
+        $('#paymentMode').val(data[5]);
+        $('#language').val(data[7]);
 
-            document.getElementById('manageForm').scrollIntoView({ behavior: 'smooth' });
-        }
-    });
+        document.getElementById('manageForm').scrollIntoView({ behavior: 'smooth' });
+    } catch (error) {
+        console.error('Error fetching row data:', error);
+    }
 }
 
-function updateData() {
-    const formData = $('#manageForm').serialize();
+async function updateData() {
+    const formData = new URLSearchParams(new FormData(document.getElementById('manageForm')));
     const rowId = $('#rowId').val();
-    showModal("Updating data...", "success"); // Show updating status immediately
-    $.ajax({
-        url: 'https://script.google.com/macros/s/AKfycbwdarDqI5EfF9IpCp42Ov6TrwbmqK43xQGhxENI2dMlvMv7lmm_sd-QXya56aoqkGBc/exec?action=update',
-        method: 'POST',
-        data: formData,
-        success: function (response) {
-            showModal(response, "success");
-            fetchDataBatch(0, 10, () => { // Reload the first batch of data
-                document.getElementById('row-' + rowId).scrollIntoView({ behavior: 'smooth', block: 'center' });
-            });
-        }
-    });
+    showModal("Updating data...", "success");
+
+    try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbwdarDqI5EfF9IpCp42Ov6TrwbmqK43xQGhxENI2dMlvMv7lmm_sd-QXya56aoqkGBc/exec?action=update', {
+            method: 'POST',
+            body: formData
+        });
+        const result = await response.text();
+        showModal(result, "success");
+        fetchDataBatch(0, 10, () => {
+            document.getElementById('row-' + rowId).scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+    } catch (error) {
+        console.error('Error updating data:', error);
+    }
 }
 
-function deleteData(rowId) {
-    showModal("Deleting data...", "success"); // Show deleting status immediately
-    $('#row-' + rowId).remove(); // Immediately remove the row for faster UI update
+async function deleteData(rowId) {
+    showModal("Deleting data...", "success");
+    $('#row-' + rowId).remove();
 
-    $.ajax({
-        url: 'https://script.google.com/macros/s/AKfycbwdarDqI5EfF9IpCp42Ov6TrwbmqK43xQGhxENI2dMlvMv7lmm_sd-QXya56aoqkGBc/exec?action=delete&rowId=' + rowId,
-        method: 'POST',
-        success: function (response) {
-            showModal(response, "success");
-            fetchDataBatch(0, 10); // Reload the first batch of data
-        }
-    });
+    try {
+        const response = await fetch(`https://script.google.com/macros/s/AKfycbwdarDqI5EfF9IpCp42Ov6TrwbmqK43xQGhxENI2dMlvMv7lmm_sd-QXya56aoqkGBc/exec?action=delete&rowId=${rowId}`, {
+            method: 'POST'
+        });
+        const result = await response.text();
+        showModal(result, "success");
+        fetchDataBatch(0, 10);
+    } catch (error) {
+        console.error('Error deleting data:', error);
+    }
 }
 
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', () => {
     loadData();
 });
