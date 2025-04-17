@@ -11,60 +11,7 @@
     <link rel="stylesheet" href="css/view-google-sheet.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: Arial, sans-serif;
-        }
-
-        .navbar-brand img {
-            width: 50px;
-            height: 50px;
-        }
-
-        .accordion .card-header {
-            background-color: #007bff;
-            color: #fff;
-        }
-
-        .accordion .btn-link {
-            color: #fff;
-            text-decoration: none;
-        }
-
-        .accordion .btn-link:hover {
-            text-decoration: underline;
-        }
-
-        .table {
-            margin-bottom: 0;
-        }
-
-        .table-bordered th,
-        .table-bordered td {
-            border: 1px solid #dee2e6;
-        }
-
-        .table thead th {
-            vertical-align: bottom;
-            border-bottom: 2px solid #dee2e6;
-        }
-
-        .table-bordered {
-            border: 1px solid #dee2e6;
-        }
-
-        .card-body {
-            padding: 1.25rem;
-            background-color: #fff;
-        }
-
-        .card-header h2,
-        .card-header h2 .btn-link {
-            font-size: 1.25rem;
-            font-weight: bold;
-        }
-    </style>
+    
 </head>
 
 <body>
@@ -84,7 +31,7 @@
                     <a class="nav-link" href="manage.html">Manage Data</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="view.html">View Google Sheet Data</a>
+                    <a class="nav-link" href="view.html">View Google Sheet</a>
                 </li>
             </ul>
         </div>
@@ -105,7 +52,11 @@
                 <div id="collapseCustomerData" class="collapse show" aria-labelledby="headingCustomerData"
                     data-parent="#dataAccordion">
                     <div class="card-body">
-                        <div id="customer-data" class="table-responsive"></div>
+                        <div id="customer-data" class="table-responsive">
+                            <div class="slider-indicator">
+                                <div class="slider-thumb"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -121,7 +72,11 @@
                 <div id="collapseSalesData" class="collapse" aria-labelledby="headingSalesData"
                     data-parent="#dataAccordion">
                     <div class="card-body">
-                        <div id="sales-data" class="table-responsive"></div>
+                        <div id="sales-data" class="table-responsive">
+                            <div class="slider-indicator">
+                                <div class="slider-thumb"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -138,7 +93,11 @@
                 <div id="collapseTypeOfFoodData" class="collapse" aria-labelledby="headingTypeOfFoodData"
                     data-parent="#dataAccordion">
                     <div class="card-body">
-                        <div id="type-of-food-data" class="table-responsive"></div>
+                        <div id="type-of-food-data" class="table-responsive">
+                            <div class="slider-indicator">
+                                <div class="slider-thumb"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -155,82 +114,182 @@
                 <div id="collapsePaymentModeData" class="collapse" aria-labelledby="headingPaymentModeData"
                     data-parent="#dataAccordion">
                     <div class="card-body">
-                        <div id="payment-mode-data" class="table-responsive"></div>
+                        <div id="payment-mode-data" class="table-responsive">
+                            <div class="slider-indicator">
+                                <div class="slider-thumb"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+
     <script>
         $(document).ready(function () {
-            fetchData('CustomerData', 'customer-data', true);
-            fetchData('Sales', 'sales-data');
-            fetchData('TypeOfFood', 'type-of-food-data');
-            fetchData('Payment', 'payment-mode-data');
+            // Call individual functions to fetch data for each sheet
+            fetchCustomerData();
+            fetchSalesData();
+            fetchTypeOfFoodData();
+            fetchPaymentData();
         });
-
-        function fetchData(sheetName, elementId, filterToday = false) {
-            const url = `https://script.google.com/macros/s/AKfycbxERBzPWhjnvb2bY-3Ho237uqEkYeVEUny0VQtfSc8DOhl_soFaqKZweEpIpro0Levb/exec?action=read&sheet=${sheetName}`;
-
+        
+        // Fetch and display Customer Data for the current date
+        function fetchCustomerData() {
+            const url = `https://script.google.com/macros/s/AKfycbz8o9XBQGJvioKCiZSrPak5tZKWUuW-VHcWU8Ed9uMz8woLy17GpA1MtlLVCHqAv68M5w/exec?action=read&sheet=CustomerData`;
+        
             $.getJSON(url, function (data) {
-                console.log(`Fetched data from ${sheetName}:`, data); // Debugging: Log the fetched data
-
-                if (filterToday) {
-                    const today = new Date().toLocaleDateString('en-US'); // Format: MM/DD/YYYY
-                    data = data.filter(row => {
-                        const rowDate = new Date(row[6]).toLocaleDateString('en-US'); // Assuming the date is in the 7th column (index 6)
-                        return rowDate === today;
-                    });
-                    console.log(`Filtered data for today (${today}) from ${sheetName}:`, data); // Debugging: Log the filtered data
+                console.log(`[CustomerData] Raw Data:`, data);
+        
+                if (!data || data.length === 0) {
+                    $('#customer-data').html(`<p class="text-center text-warning">No data found for Customer Data.</p>`);
+                    return;
                 }
-                displayTable(data, elementId, sheetName);
+        
+                const today = new Date().setHours(0, 0, 0, 0); // Strip time for comparison
+                const headers = ["Customer Name", "Mobile No", "Type", "Price", "Quantity", "Mode of Payment", "Date & Time", "Language"];
+                const processedData = data.slice(1).filter(row => {
+                    const rowDate = row[6] ? new Date(row[6]).setHours(0, 0, 0, 0) : null; // Date in Column G
+                    return rowDate === today;
+                }).map(row => {
+                    row[6] = row[6] ? formatDateToDDMMYYYY(row[6]) : 'N/A'; // Format date in Column G
+                    return row.slice(0, 8); // Extract columns A to H
+                });
+        
+                if (processedData.length === 0) {
+                    $('#customer-data').html(`<p class="text-center text-warning">No data available for today's date.</p>`);
+                    return;
+                }
+        
+                displayTable(processedData, headers, 'customer-data');
             }).fail(function (jqxhr, textStatus, error) {
                 const err = textStatus + ", " + error;
-                console.error("Request Failed: " + err);
-                $(`#${elementId}`).html(`<p class="text-center text-danger">Failed to fetch data from Google Sheets. Error: ${err}</p>`);
+                console.error(`[CustomerData] Fetch Error: ${err}`);
+                $('#customer-data').html(`<p class="text-center text-danger">Failed to fetch Customer Data. Error: ${err}</p>`);
             });
         }
-
-        function displayTable(data, elementId, sheetName) {
-            if (!data || data.length === 0) {
-                $(`#${elementId}`).html('<p class="text-center text-warning">No data found in the specified range.</p>');
-                return;
-            }
-
-            let headers;
-            let filteredData = data;
-
-            if (sheetName === 'CustomerData') {
-                headers = ["Customer Name", "Mobile No", "Type", "Price", "Quantity", "Mode of Payment", "Date & Time", "Language"];
-            } else if (sheetName === 'Sales') {
-                headers = [data[0][5], data[0][6]]; // Use headers from the first row (actual header names)
-                filteredData = data.slice(1).map(row => [row[5], row[6]]); // Extracting only F and G columns (index 5 and 6)
-            } else {
-                headers = data[0];
-                filteredData = data.slice(1);
-            }
-
-            let table = '<table class="table table-striped table-bordered">';
-            table += '<thead><tr>';
-            headers.forEach(header => {
-                table += `<th>${header}</th>`;
+        
+        // Fetch and display Sales Data for the current date
+        function fetchSalesData() {
+            const url = `https://script.google.com/macros/s/AKfycbz8o9XBQGJvioKCiZSrPak5tZKWUuW-VHcWU8Ed9uMz8woLy17GpA1MtlLVCHqAv68M5w/exec?action=read&sheet=Sales`;
+        
+            $.getJSON(url, function (data) {
+                console.log(`[Sales] Raw Data:`, data);
+        
+                if (!data || data.length === 0) {
+                    $('#sales-data').html(`<p class="text-center text-warning">No data found for Sales Data.</p>`);
+                    return;
+                }
+        
+                const today = new Date().setHours(0, 0, 0, 0); // Strip time for comparison
+                const headers = ["Date", "Total Sale"];
+                const processedData = data.slice(4).filter(row => {
+                    const rowDate = row[5] ? new Date(row[5]).setHours(0, 0, 0, 0) : null; // Date in Column F
+                    return rowDate === today;
+                }).map(row => [
+                    row[5] ? formatDateToDDMMYYYY(row[5]) : 'N/A', // Format the date in Column F
+                    row[6] || 'N/A' // Extract Column G
+                ]);
+        
+                if (processedData.length === 0) {
+                    $('#sales-data').html(`<p class="text-center text-warning">No data available for today's date.</p>`);
+                    return;
+                }
+        
+                displayTable(processedData, headers, 'sales-data');
+            }).fail(function (jqxhr, textStatus, error) {
+                const err = textStatus + ", " + error;
+                console.error(`[Sales] Fetch Error: ${err}`);
+                $('#sales-data').html(`<p class="text-center text-danger">Failed to fetch Sales Data. Error: ${err}</p>`);
             });
+        }
+        
+        // Fetch and display Type of Food Data for the current date
+        function fetchTypeOfFoodData() {
+            const url = `https://script.google.com/macros/s/AKfycbz8o9XBQGJvioKCiZSrPak5tZKWUuW-VHcWU8Ed9uMz8woLy17GpA1MtlLVCHqAv68M5w/exec?action=read&sheet=TypeOfFood`;
+        
+            $.getJSON(url, function (data) {
+                console.log(`[TypeOfFood] Raw Data:`, data);
+        
+                if (!data || data.length === 0) {
+                    $('#type-of-food-data').html(`<p class="text-center text-warning">No data found for Type of Food Data.</p>`);
+                    return;
+                }
+        
+                const today = new Date().setHours(0, 0, 0, 0); // Strip time for comparison
+                const headers = ["Date", "Veg Full", "Veg Half", "Veg Quarter", "Non-Veg Full", "Non-Veg Half", "Non-Veg Quarter"];
+                const processedData = data.slice(1).filter(row => {
+                    const rowDate = row[0] ? new Date(row[0]).setHours(0, 0, 0, 0) : null; // Date in Column A
+                    return rowDate === today;
+                }).map(row => [
+                    row[0] ? formatDateToDDMMYYYY(row[0]) : 'N/A', // Format the date in Column A
+                    row[1] || 'N/A', row[2] || 'N/A', 
+                    row[3] || 'N/A', row[4] || 'N/A', row[5] || 'N/A', row[6] || 'N/A'
+                ]);
+        
+                if (processedData.length === 0) {
+                    $('#type-of-food-data').html(`<p class="text-center text-warning">No data available for today's date.</p>`);
+                    return;
+                }
+        
+                displayTable(processedData, headers, 'type-of-food-data');
+            }).fail(function (jqxhr, textStatus, error) {
+                const err = textStatus + ", " + error;
+                console.error(`[TypeOfFood] Fetch Error: ${err}`);
+                $('#type-of-food-data').html(`<p class="text-center text-danger">Failed to fetch Type of Food Data. Error: ${err}</p>`);
+            });
+        }
+        
+        // Fetch and display Payment Data (no filtering by date)
+        function fetchPaymentData() {
+            const url = `https://script.google.com/macros/s/AKfycbz8o9XBQGJvioKCiZSrPak5tZKWUuW-VHcWU8Ed9uMz8woLy17GpA1MtlLVCHqAv68M5w/exec?action=read&sheet=Payment`;
+        
+            $.getJSON(url, function (data) {
+                console.log(`[Payment] Raw Data:`, data);
+        
+                if (!data || data.length === 0) {
+                    $('#payment-mode-data').html(`<p class="text-center text-warning">No data found for Payment Data.</p>`);
+                    return;
+                }
+        
+                const headers = data[0]; // Use the first row as headers
+                const processedData = data.slice(1); // Skip the header row
+        
+                displayTable(processedData, headers, 'payment-mode-data');
+            }).fail(function (jqxhr, textStatus, error) {
+                const err = textStatus + ", " + error;
+                console.error(`[Payment] Fetch Error: ${err}`);
+                $('#payment-mode-data').html(`<p class="text-center text-danger">Failed to fetch Payment Data. Error: ${err}</p>`);
+            });
+        }
+        
+        // Utility function to format dates
+        function formatDateToDDMMYYYY(dateString) {
+            try {
+                const date = new Date(dateString);
+                if (isNaN(date.getTime())) return 'Invalid Date'; // Check for invalid date
+                return `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+            } catch {
+                return 'Invalid Date';
+            }
+        }
+        
+        // Utility function to display a table
+        function displayTable(data, headers, elementId) {
+            let table = '<table class="table table-striped table-bordered"><thead><tr>';
+            headers.forEach(header => table += `<th>${header}</th>`);
             table += '</tr></thead><tbody>';
-
-            filteredData.forEach(row => {
+            data.forEach(row => {
                 table += '<tr>';
-                row.forEach(cell => {
-                    if (cell !== null && cell !== undefined && cell !== "") {
-                        table += `<td>${cell}</td>`;
-                    }
-                });
+                row.forEach(cell => table += `<td>${cell || ''}</td>`); // Default empty cells to ''
                 table += '</tr>';
             });
             table += '</tbody></table>';
             $(`#${elementId}`).html(table);
         }
     </script>
+
 </body>
 
 </html>
