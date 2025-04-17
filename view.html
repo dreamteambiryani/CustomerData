@@ -207,7 +207,8 @@
         
         // Fetch and display Type of Food Data for the current date
         function fetchTypeOfFoodData() {
-            const url = `https://script.google.com/macros/s/AKfycbz8o9XBQGJvioKCiZSrPak5tZKWUuW-VHcWU8Ed9uMz8woLy17GpA1MtlLVCHqAv68M5w/exec?action=read&sheet=TypeOfFood`;
+            
+            const url = `https://script.google.com/macros/s/AKfycbwdarDqI5EfF9IpCp42Ov6TrwbmqK43xQGhxENI2dMlvMv7lmm_sd-QXya56aoqkGBc/exec?action=read&sheet=TypeOfFood`;
         
             $.getJSON(url, function (data) {
                 console.log(`[TypeOfFood] Raw Data:`, data);
